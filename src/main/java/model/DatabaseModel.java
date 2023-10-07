@@ -118,22 +118,22 @@ public class DatabaseModel {
         return false;
     }
 
-    public boolean insertAttendance(Attendance attn) {
-        try {
-            PreparedStatement insertStatement = dbQueries.getInsertAttendance();
-            insertStatement.setString(1, attn.getDate());
-            insertStatement.setDouble(2, attn.getHoursWorked());
-            insertStatement.setInt(3, attn.getAttendance_type_id());
-            insertStatement.setInt(4, attn.getEmployeeID());
-
-            int rowsAffected = insertStatement.executeUpdate();
-            return rowsAffected > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+//    public boolean insertAppointment(Appointment attn) {
+//        try {
+//            PreparedStatement insertStatement = dbQueries.getInsertAttendance();
+//            insertStatement.setString(1, attn.getDate());
+//            insertStatement.setDouble(2, attn.getHoursWorked());
+//            insertStatement.setInt(3, attn.getAttendance_type_id());
+//            insertStatement.setInt(4, attn.getEmployeeID());
+//
+//            int rowsAffected = insertStatement.executeUpdate();
+//            return rowsAffected > 0;
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
 
     public boolean insertEmployee(String name, String email, String password, boolean isAdmin, String address, String phone) {
         try {
@@ -191,7 +191,7 @@ public class DatabaseModel {
         }
     }
 
-    public synchronized Employee login(String email, String password) {
+    public synchronized HospitalStaff login(String email, String password) {
         try {
             String storedPassword = getPasswordFromDatabase(email);
 
@@ -221,7 +221,7 @@ public class DatabaseModel {
         return null;
     }
 
-    public Employee getEmployeeDetails(String email) {
+    public HospitalStaff getEmployeeDetails(String email) {
 
         try {
             PreparedStatement getUserDetailsStatement = dbQueries.getEmployeeDetail(email);
@@ -233,7 +233,7 @@ public class DatabaseModel {
                 String address = result.getString("address");
                 String phone = result.getString("phone");
                 boolean employmentStatus = result.getBoolean("isManager");
-                return new Employee(uid, yourName, yourEmail, "password", employmentStatus, address, phone);
+                return new HospitalStaff(uid, yourName, yourEmail, "password", employmentStatus, address, phone);
             }
         } catch (SQLException e) {
             // Handle any SQL exception
@@ -242,7 +242,7 @@ public class DatabaseModel {
         return null;
     }
 
-    public boolean updateEmployee(Employee employee) {
+    public boolean updateEmployee(HospitalStaff employee) {
         String query = "UPDATE employee SET name=?, isManager=?, address=?, phone=? WHERE uid=?";
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setString(1, employee.getName());
@@ -259,7 +259,7 @@ public class DatabaseModel {
         }
     }
 
-    public boolean updateAccount(Employee employee, Account account) {
+    public boolean updateAccount(HospitalStaff employee, Account account) {
         String query = "UPDATE account SET hourlyRate=? WHERE employee_id=?";
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setDouble(2, account.getHourlyRate());
@@ -272,7 +272,7 @@ public class DatabaseModel {
         }
     }
 
-    public synchronized Account getAccountDetailsForEmployee(Employee employee) {
+    public synchronized Account getAccountDetailsForEmployee(HospitalStaff employee) {
         String query = "SELECT * FROM Account WHERE employee_id=?";
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setInt(1, employee.getUid());
@@ -293,8 +293,8 @@ public class DatabaseModel {
         return null;
     }
 
-    public List<Employee> getAllEmployees() {
-        List<Employee> employees = new ArrayList<>();
+    public List<HospitalStaff> getAllEmployees() {
+        List<HospitalStaff> employees = new ArrayList<>();
         try {
             PreparedStatement getUserDetailsStatement = dbQueries.getAllEmployees();
             ResultSet result = getUserDetailsStatement.executeQuery();
@@ -306,7 +306,7 @@ public class DatabaseModel {
                 String address = result.getString("address");
                 String phone = result.getString("phone");
                 boolean employmentStatus = result.getBoolean("isManager");
-                employees.add(new Employee(uid, yourName, yourEmail, yourPassword, employmentStatus, address, phone));
+                employees.add(new HospitalStaff(uid, yourName, yourEmail, yourPassword, employmentStatus, address, phone));
             }
         } catch (SQLException e) {
             // Handle any SQL exception
