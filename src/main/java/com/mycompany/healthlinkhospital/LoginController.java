@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.getitnow;
+package com.mycompany.healthlinkhospital;
 
 import java.io.IOException;
 import javafx.animation.PauseTransition;
@@ -14,7 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import model.Employee;
+import model.HospitalStaff;
 
 /**
  *
@@ -52,7 +52,7 @@ public class LoginController extends BaseController {
         }
 
         // verify and retrieve employee detail
-        Employee employee = databaseModel.login(email, password);
+        HospitalStaff employee = databaseModel.login(email, password);
 
         if (employee != null) {
             warningOrErrorLbl.setText("Login successful..");
@@ -63,7 +63,7 @@ public class LoginController extends BaseController {
         }
     }
 
-    private void redirectToDashboard(ActionEvent actionEvent, Employee employee) throws IOException {
+    private void redirectToDashboard(ActionEvent actionEvent, HospitalStaff employee) throws IOException {
         var pause = new PauseTransition(javafx.util.Duration.seconds(1));
         pause.setOnFinished(event -> {
             try {

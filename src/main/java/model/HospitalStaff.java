@@ -11,7 +11,7 @@ import javafx.beans.property.StringProperty;
  *
  * @author pukarsharma
  */
-public class Employee {
+public class HospitalStaff {
 
     private int userId;
     private String name;
@@ -22,7 +22,7 @@ public class Employee {
     private String phone;
     private StringProperty isManagerString;
 
-    public Employee(int userId, String name, String email, String password, boolean isManager, String address, String phone) {
+    public HospitalStaff(int userId, String name, String email, String password, boolean isManager, String address, String phone) {
         this.userId = userId;
         this.name = name;
         this.email = email;

@@ -1,4 +1,4 @@
-package com.mycompany.getitnow;
+package com.mycompany.healthlinkhospital;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,7 +16,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Account;
 import model.CheckinType;
-import model.Employee;
+import model.HospitalStaff;
 import utilities.PayrollSystem;
 
 public class DashboardController extends BaseController {
@@ -39,7 +39,7 @@ public class DashboardController extends BaseController {
     
     protected ObservableList checkinType = FXCollections.observableArrayList(new ArrayList<>(EnumSet.allOf(CheckinType.class)));
     
-    public Employee employee = null;
+    public HospitalStaff employee = null;
     
     List<PayrollSystem.TaxBracket> taxBrackets = new ArrayList<>();
     
@@ -116,7 +116,7 @@ public class DashboardController extends BaseController {
             stage.setScene(new Scene(root));
             stage.setTitle("Week's Hours Entry");
             
-            AttendanceController attendanceController = loader.getController();
+            AppointmentController attendanceController = loader.getController();
             attendanceController.employee = employee;
 
             // Show the week's hours entry form
@@ -137,7 +137,7 @@ public class DashboardController extends BaseController {
             Stage loginStage = new Stage();
             loginStage.setTitle("Edit employee details");
             
-            AddOrEditEmployeeController editController = loader.getController();
+            AddOrEditPatientController editController = loader.getController();
             editController.employee = employee;
             
             loginStage.setScene(scene);
@@ -149,7 +149,7 @@ public class DashboardController extends BaseController {
         }
     }
     
-    public void setEmployee(Employee employee) {
+    public void setEmployee(HospitalStaff employee) {
         this.employee = employee;
         displayEmployeeDetails();
         loadAccountDetails();
