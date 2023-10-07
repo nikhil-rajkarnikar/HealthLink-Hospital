@@ -4,7 +4,7 @@ module com.mycompany.getitnow {
     requires java.base;
     requires java.sql;
 
-    opens com.mycompany.getitnow to javafx.fxml;
+    opens com.mycompany.healthlinkhospital to javafx.fxml;
     opens model to javafx.base;
-    exports com.mycompany.getitnow;
+    exports com.mycompany.healthlinkhospital;
 }
