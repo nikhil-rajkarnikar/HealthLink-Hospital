@@ -1,4 +1,4 @@
-module com.mycompany.getitnow {
+module com.mycompany.healthlinkhospital {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.base;

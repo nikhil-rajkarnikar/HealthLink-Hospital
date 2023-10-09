@@ -145,7 +145,7 @@ public class DashboardController extends BaseController {
             editController.loadFields();
             
         } catch (IOException e) {
-            System.out.println("com.mycompany.getitnow.CheckEmployeeDetailController.navigateToEditEmployee() failed ==> " + e);
+            System.out.println("com.mycompany.healthlinkhospital.CheckEmployeeDetailController.navigateToEditEmployee() failed ==> " + e);
         }
     }
     
