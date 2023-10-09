@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="330.0" prefWidth="547.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.getitnow.CheckEmployeeDetailController">
+<AnchorPane id="AnchorPane" prefHeight="330.0" prefWidth="547.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.healthlinkhospital.CheckEmployeeDetailController">
     <children>
         <TextField fx:id="searchField" layoutX="16.0" layoutY="53.0" prefHeight="26.0" prefWidth="432.0" promptText="Enter Email ID" AnchorPane.leftAnchor="16.0" />
         <Button fx:id="searchBtn" layoutX="464.0" layoutY="53.0" mnemonicParsing="false" onAction="#handleSearchEmployeeButton" text="Search" AnchorPane.leftAnchor="464.0" AnchorPane.rightAnchor="27.5" />

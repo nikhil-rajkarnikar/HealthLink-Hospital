@@ -59,7 +59,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.4</version>
                 <configuration>
-                    <mainClass>com.mycompany.getitnow.App</mainClass>
+                    <mainClass>com.mycompany.healthlinkhospital.App</mainClass>
                 </configuration>
                 <executions>
                     <execution>
