@@ -66,7 +66,7 @@ public class DashboardController extends BaseController {
             employee = null;
             FXMLLoader loader = new FXMLLoader(App.class.getResource("login.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root,480, 480);
             Stage loginStage = new Stage();
             loginStage.setScene(scene);
             loginStage.show();
