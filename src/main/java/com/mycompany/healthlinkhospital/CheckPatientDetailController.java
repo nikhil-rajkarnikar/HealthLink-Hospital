@@ -59,7 +59,7 @@ public class CheckPatientDetailController extends BaseController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         super.initialize(url, rb);
-        setupTableView();
+        // setupTableView();
     }
 
     private void setupTableView() {
