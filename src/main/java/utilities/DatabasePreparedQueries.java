@@ -45,6 +45,13 @@ public class DatabasePreparedQueries {
         return preparedStatement;
     }
 
+    public PreparedStatement getPatientDetail(int patientId) throws SQLException {
+        String query = "SELECT name, email, address, phone, createdDate, doesRequireImaging, isOutpatient, isInPatient FROM patient WHERE patientId = ?";
+        PreparedStatement preparedStatement = dbConnection.prepareStatement(query);
+        preparedStatement.setInt(1, patientId);
+        return preparedStatement;
+    }
+
     public PreparedStatement getTimesheetDatesForEmployeeLastWeek(Integer employeeID) throws SQLException {
         // Calculate the date range for the last week
         LocalDate today = LocalDate.now();
@@ -71,6 +78,12 @@ public class DatabasePreparedQueries {
 
     public PreparedStatement getInsertEmployee() throws SQLException {
         String query = "INSERT INTO employee (name, email, password, isManager, address, phone) VALUES (?, ?, ?, ?, ?, ?)";
+        return dbConnection.prepareStatement(query);
+    }
+
+    public PreparedStatement getInsertPatient() throws SQLException {
+        String query = "INSERT INTO patient (name, email, address, phone, createdDate, doesRequireImaging, isOutpatient, isInPatient) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         return dbConnection.prepareStatement(query);
     }
 

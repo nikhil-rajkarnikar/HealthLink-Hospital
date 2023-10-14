@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.HospitalStaff;
+import model.Patient;
 import utilities.AlertUtils;
 
 /**
@@ -83,7 +84,7 @@ public class CheckPatientDetailController extends BaseController {
 
                 HospitalStaff selectedEmployee = employeeTable.getSelectionModel().getSelectedItem();
                 if (selectedEmployee != null) {
-                    navigateToEditEmployee(selectedEmployee);
+//                    navigateToEditEmployee(selectedEmployee);
                 }
             }
         });
@@ -97,7 +98,7 @@ public class CheckPatientDetailController extends BaseController {
         stage.close();
     }
 
-    private void navigateToEditEmployee(HospitalStaff employee) {
+    private void navigateToEditEmployee(Patient patient) {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("addEmployee.fxml"));
             Parent root = loader.load();
@@ -107,11 +108,11 @@ public class CheckPatientDetailController extends BaseController {
             loginStage.setTitle("Edit employee details");
 
             AddOrEditPatientController editController = loader.getController();
-            editController.employee = employee;
+            editController.patient = patient;
 
             loginStage.setScene(scene);
             loginStage.show();
-            editController.loadFields();
+//            editController.loadFields();
 
         } catch (IOException e) {
             System.out.println("com.mycompany.healthlinkhospital.CheckEmployeeDetailController.navigateToEditEmployee() failed ==> " + e);

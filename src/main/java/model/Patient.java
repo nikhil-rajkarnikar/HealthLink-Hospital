@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
+
 import javafx.beans.property.StringProperty;
 
 /**
@@ -10,30 +11,30 @@ import javafx.beans.property.StringProperty;
  * @author pukarsharma
  */
 public class Patient {
+
     private int patientId;
     private String name;
     private String email;
-    private boolean isInPatient = false;
-    private boolean isOutpatient = false;
     private String address;
     private String phone;
+    private String createdDate;
     private boolean doesRequireImaging = false;
-    private String addedOn;
+    private boolean isOutpatient = false;
+    private boolean isInPatient = false;
     private StringProperty doesRequireImagingString;
     private StringProperty isInPatientString;
     private StringProperty isOutpatientString;
 
-    public Patient(int patientId, String name, String email, String address, String phone, boolean doesRequireImaging, String addedOn, StringProperty doesRequireImagingString, StringProperty isInPatientString, StringProperty isOutpatientString) {
+    public Patient(int patientId, String name, String email, String address, String phone, String createdDate, boolean doesRequireImaging, boolean isOutpatient, boolean isInPatient) {
         this.patientId = patientId;
         this.name = name;
         this.email = email;
         this.address = address;
         this.phone = phone;
+        this.createdDate = createdDate;
         this.doesRequireImaging = doesRequireImaging;
-        this.addedOn = addedOn;
-        this.doesRequireImagingString = doesRequireImagingString;
-        this.isInPatientString = isInPatientString;
-        this.isOutpatientString = isOutpatientString;
+        this.isOutpatient = isOutpatient;
+        this.isInPatient = isInPatient;
     }
 
     public int getPatientId() {
@@ -100,12 +101,12 @@ public class Patient {
         this.doesRequireImaging = doesRequireImaging;
     }
 
-    public String getAddedOn() {
-        return addedOn;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
-    public void setAddedOn(String addedOn) {
-        this.addedOn = addedOn;
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 
     public StringProperty getDoesRequireImagingString() {

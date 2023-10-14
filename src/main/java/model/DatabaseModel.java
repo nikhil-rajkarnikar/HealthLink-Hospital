@@ -45,7 +45,7 @@ public class DatabaseModel {
     }
 
     private void createDatabaseIfNotExists(String dbCreateStatement) {
-        try (Statement statement = dbConnection.createStatement()) {
+        try ( Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(dbCreateStatement);
         } catch (SQLException e) {
             handleSQLException(e);
@@ -54,13 +54,14 @@ public class DatabaseModel {
 
     private void createTablesIfNotExists() {
         createEmployeeTableIfNotExists();
+        createPatientTableIfNotExists();
         createAttendaceTypeTableIfNotExists();
         createAttendaceTableIfNotExists();
         createAccountTableIfNotExists();
     }
 
     private void createEmployeeTableIfNotExists() {
-        try (Statement statement = dbConnection.createStatement()) {
+        try ( Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(DatabaseConstants.QRY_CREATE_EMPLOYEE_TABLE);
 
             // insert default super user
@@ -70,8 +71,16 @@ public class DatabaseModel {
         }
     }
 
+    private void createPatientTableIfNotExists() {
+        try ( Statement statement = dbConnection.createStatement()) {
+            statement.executeUpdate(DatabaseConstants.QRY_CREATE_PATIENT_TABLE);
+        } catch (SQLException e) {
+            handleSQLException(e);
+        }
+    }
+
     private void createAttendaceTypeTableIfNotExists() {
-        try (Statement statement = dbConnection.createStatement()) {
+        try ( Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(DatabaseConstants.QRY_CREATE_ATTENDANCE_TYPE_TABLE);
             insertDefaultAttendanceType();
         } catch (SQLException e) {
@@ -80,7 +89,7 @@ public class DatabaseModel {
     }
 
     private void createAttendaceTableIfNotExists() {
-        try (Statement statement = dbConnection.createStatement()) {
+        try ( Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(DatabaseConstants.QRY_CREATE_ATTENDANCE_TABLE);
         } catch (SQLException e) {
             handleSQLException(e);
@@ -88,7 +97,7 @@ public class DatabaseModel {
     }
 
     private void createAccountTableIfNotExists() {
-        try (Statement statement = dbConnection.createStatement()) {
+        try ( Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(DatabaseConstants.QRY_CREATE_ACCOUNT_TABLE);
         } catch (SQLException e) {
             handleSQLException(e);
@@ -134,7 +143,6 @@ public class DatabaseModel {
 //            return false;
 //        }
 //    }
-
     public boolean insertEmployee(String name, String email, String password, boolean isAdmin, String address, String phone) {
         try {
             if (getEmployeeDetails(email) == null) {
@@ -166,6 +174,32 @@ public class DatabaseModel {
         }
     }
 
+    public boolean insertPatient(String name, String email, String address, String phone, String createdDate, boolean doesRequireImaging, boolean isOutpatient, boolean isInPatient) {
+        try {
+//        if (getPatientDetails(email) == null) {
+            PreparedStatement insertStatement = dbQueries.getInsertPatient();
+            insertStatement.setString(1, name);
+            insertStatement.setString(2, email);
+            insertStatement.setString(3, address);
+            insertStatement.setString(4, phone);
+            insertStatement.setString(5, createdDate);
+            insertStatement.setBoolean(6, doesRequireImaging);
+            insertStatement.setBoolean(7, isOutpatient);
+            insertStatement.setBoolean(8, isInPatient);
+
+            int rowsAffected = insertStatement.executeUpdate();
+            return rowsAffected > 0; // Check if the insertion was successful
+//        } else {
+//            // Handle if the user is already present
+//            AlertUtils.showErrorAlert("Error", "Patient already exists");
+//            return false;
+//        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean insertAccount(Account account) {
         try {
             PreparedStatement insertStatement = dbQueries.getInsertAccounts();
@@ -184,7 +218,7 @@ public class DatabaseModel {
     }
 
     private void insertDefaultAttendanceType() {
-        try (Statement statement = dbConnection.createStatement()) {
+        try ( Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(DatabaseConstants.QRY_INSERT_ATTENDANCE_TYPE);
         } catch (SQLException e) {
             handleSQLException(e);
@@ -242,9 +276,32 @@ public class DatabaseModel {
         return null;
     }
 
+    public Patient getPatientDetails(int patientId) {
+        try {
+            PreparedStatement getPatientDetailsStatement = dbQueries.getPatientDetail(patientId);
+            ResultSet result = getPatientDetailsStatement.executeQuery();
+            if (result.next()) {
+                String name = result.getString("name");
+                String email = result.getString("email");
+                String address = result.getString("address");
+                String phone = result.getString("phone");
+                String createdDate = result.getString("createdDate");
+                boolean doesRequireImaging = result.getBoolean("doesRequireImaging");
+                boolean isOutpatient = result.getBoolean("isOutpatient");
+                boolean isInPatient = result.getBoolean("isInPatient");
+
+                return new Patient(patientId, name, email, address, phone, createdDate, doesRequireImaging, isOutpatient, isInPatient);
+            }
+        } catch (SQLException e) {
+            // Handle any SQL exception
+            handleSQLException(e);
+        }
+        return null;
+    }
+
     public boolean updateEmployee(HospitalStaff employee) {
         String query = "UPDATE employee SET name=?, isManager=?, address=?, phone=? WHERE uid=?";
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+        try ( PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setString(1, employee.getName());
             preparedStatement.setBoolean(2, employee.isManager());
             preparedStatement.setString(3, employee.getAddress());
@@ -259,9 +316,29 @@ public class DatabaseModel {
         }
     }
 
+    public boolean updatePatient(Patient patient) {
+        String query = "UPDATE patient SET name=?, address=?, phone=?, createdDate=?, doesRequireImaging=?, isOutpatient=?, isInPatient=? WHERE patientId=?";
+        try ( PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            preparedStatement.setString(1, patient.getName());
+            preparedStatement.setString(2, patient.getAddress());
+            preparedStatement.setString(3, patient.getPhone());
+            preparedStatement.setString(4, patient.getCreatedDate());
+            preparedStatement.setBoolean(5, patient.isDoesRequireImaging());
+            preparedStatement.setBoolean(6, patient.isIsOutpatient());
+            preparedStatement.setBoolean(7, patient.isIsInPatient());
+            preparedStatement.setInt(8, patient.getPatientId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            handleSQLException(e);
+            return false;
+        }
+    }
+
     public boolean updateAccount(HospitalStaff employee, Account account) {
         String query = "UPDATE account SET hourlyRate=? WHERE employee_id=?";
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+        try ( PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setDouble(2, account.getHourlyRate());
             preparedStatement.setString(1, employee.getName());
             int rowsAffected = preparedStatement.executeUpdate();
@@ -274,7 +351,7 @@ public class DatabaseModel {
 
     public synchronized Account getAccountDetailsForEmployee(HospitalStaff employee) {
         String query = "SELECT * FROM Account WHERE employee_id=?";
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+        try ( PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setInt(1, employee.getUid());
 
             ResultSet result = preparedStatement.executeQuery();

@@ -19,6 +19,7 @@ public class DatabaseConstants {
 
     // table names
     public static final String TABLE_EMPLOYEE = "employee";
+    public static final String TABLE_PATIENT = "patient";
     public static final String TABLE_ACCOUNT = "account";
     public static final String TABLE_ATTENDANCE = "attendance";
     public static final String TABLE_ATTENDANCE_TYPE = "attendance_type";
@@ -34,6 +35,19 @@ public class DatabaseConstants {
             + "address TEXT,"
             + "phone TEXT,"
             + "PRIMARY KEY (uid)"
+            + ") AUTO_INCREMENT = 1001;";
+
+    public static final String QRY_CREATE_PATIENT_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_PATIENT + " ("
+            + "patientId INT NOT NULL AUTO_INCREMENT,"
+            + "name VARCHAR(255),"
+            + "email VARCHAR(255),"
+            + "address TEXT,"
+            + "phone TEXT,"
+            + "createdDate DATE,"
+            + "doesRequireImaging BOOLEAN,"
+            + "isOutpatient BOOLEAN,"
+            + "isInPatient BOOLEAN,"
+            + "PRIMARY KEY (patientId)"
             + ") AUTO_INCREMENT = 1001;";
 
     public static final String QRY_CREATE_ACCOUNT_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_ACCOUNT + " ("
