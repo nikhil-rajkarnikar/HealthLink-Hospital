@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="297.0" prefWidth="200.0" spacing="20.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.healthlinkhospital.LoginController">
+<VBox alignment="CENTER" prefHeight="297.0" prefWidth="392.0" spacing="20.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.healthlinkhospital.LoginController">
    <children>
-      <Label text="GET IT NOW">
+      <Label text="Healthlink - Hospital">
          <font>
             <Font name="System Font" size="28.0" />
          </font></Label>

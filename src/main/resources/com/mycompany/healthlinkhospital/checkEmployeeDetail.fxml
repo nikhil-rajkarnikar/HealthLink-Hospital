@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="330.0" prefWidth="547.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.healthlinkhospital.CheckEmployeeDetailController">
+<AnchorPane id="AnchorPane" prefHeight="330.0" prefWidth="547.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.healthlinkhospital.CheckPatientDetailController">
     <children>
         <TextField fx:id="searchField" layoutX="16.0" layoutY="53.0" prefHeight="26.0" prefWidth="432.0" promptText="Enter Email ID" AnchorPane.leftAnchor="16.0" />
         <Button fx:id="searchBtn" layoutX="464.0" layoutY="53.0" mnemonicParsing="false" onAction="#handleSearchEmployeeButton" text="Search" AnchorPane.leftAnchor="464.0" AnchorPane.rightAnchor="27.5" />
         <TableView fx:id="employeeTable" layoutX="25.0" layoutY="87.0" prefHeight="224.0" prefWidth="515.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="90.0" />
-      <Label layoutX="16.0" layoutY="4.0" prefHeight="29.0" prefWidth="321.0" text="Search and Manage employee " AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="4.0">
+      <Label layoutX="16.0" layoutY="4.0" prefHeight="29.0" prefWidth="321.0" text="Search and Manage patients" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="4.0">
          <font>
             <Font size="24.0" />
          </font>
