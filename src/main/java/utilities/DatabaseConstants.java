@@ -15,7 +15,7 @@ public class DatabaseConstants {
     public static final String MYSQL_URL = "jdbc:mysql://127.0.0.1:3306";
     public static final String DB_URL = MYSQL_URL + "/" + MYSQL_DB + "?useSSL=false";
     public static final String USER_NAME = "root";
-    public static final String PASSWORD = "rootroot";
+    public static final String PASSWORD = "adminnik";
 
     // table names
     public static final String TABLE_EMPLOYEE = "employee";
@@ -44,7 +44,7 @@ public class DatabaseConstants {
             + "phone TEXT,"
             + "createdDate DATE,"
             + "doesRequireImaging BOOLEAN,"
-            + "isOutpatient BOOLEAN,"
+            + "isOutPatient BOOLEAN,"
             + "isInPatient BOOLEAN,"
             + "PRIMARY KEY (patientId)"
             + ") AUTO_INCREMENT = 1001;";

@@ -155,7 +155,7 @@ public class DatabaseModel {
         }
     }
 
-    public boolean insertPatient(String name, String email, String address, String phone, String createdDate, boolean doesRequireImaging, boolean isOutpatient, boolean isInPatient) {
+    public boolean insertPatient(String name, String email, String address, String phone, String createdDate, boolean doesRequireImaging, boolean isOutPatient, boolean isInPatient) {
         try {
 //        if (getPatientDetails(email) == null) {
             PreparedStatement insertStatement = dbQueries.getInsertPatient();
@@ -165,7 +165,7 @@ public class DatabaseModel {
             insertStatement.setString(4, phone);
             insertStatement.setString(5, createdDate);
             insertStatement.setBoolean(6, doesRequireImaging);
-            insertStatement.setBoolean(7, isOutpatient);
+            insertStatement.setBoolean(7, isOutPatient);
             insertStatement.setBoolean(8, isInPatient);
 
             int rowsAffected = insertStatement.executeUpdate();
@@ -262,10 +262,10 @@ public class DatabaseModel {
                 String phone = result.getString("phone");
                 String createdDate = result.getString("createdDate");
                 boolean doesRequireImaging = result.getBoolean("doesRequireImaging");
-                boolean isOutpatient = result.getBoolean("isOutpatient");
+                boolean isOutPatient = result.getBoolean("isOutPatient");
                 boolean isInPatient = result.getBoolean("isInPatient");
 
-                return new Patient(patientId, name, email, address, phone, createdDate, doesRequireImaging, isOutpatient, isInPatient);
+                return new Patient(patientId, name, email, address, phone, createdDate, doesRequireImaging, isOutPatient, isInPatient);
             }
         } catch (SQLException e) {
             // Handle any SQL exception
@@ -292,15 +292,15 @@ public class DatabaseModel {
     }
 
     public boolean updatePatient(Patient patient) {
-        String query = "UPDATE patient SET name=?, address=?, phone=?, createdDate=?, doesRequireImaging=?, isOutpatient=?, isInPatient=? WHERE patientId=?";
+        String query = "UPDATE patient SET name=?, address=?, phone=?, createdDate=?, doesRequireImaging=?, isOutPatient=?, isInPatient=? WHERE patientId=?";
         try ( PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setString(1, patient.getName());
             preparedStatement.setString(2, patient.getAddress());
             preparedStatement.setString(3, patient.getPhone());
             preparedStatement.setString(4, patient.getCreatedDate());
-            preparedStatement.setBoolean(5, patient.isDoesRequireImaging());
-            preparedStatement.setBoolean(6, patient.isIsOutpatient());
-            preparedStatement.setBoolean(7, patient.isIsInPatient());
+            preparedStatement.setBoolean(5, patient.getDoesRequireImaging());
+            preparedStatement.setBoolean(6, patient.getIsOutPatient());
+            preparedStatement.setBoolean(7, patient.getIsInPatient());
             preparedStatement.setInt(8, patient.getPatientId());
 
             int rowsAffected = preparedStatement.executeUpdate();
@@ -365,6 +365,31 @@ public class DatabaseModel {
             handleSQLException(e);
         }
         return employees;
+    }
+
+    public List<Patient> getAllPatients() {
+        List<Patient> patients = new ArrayList<>();
+        try {
+            PreparedStatement getPatientsStatement = dbQueries.getAllPatients();
+            ResultSet result = getPatientsStatement.executeQuery();
+            while (result.next()) {
+                int patientId = result.getInt("patientId");
+                String name = result.getString("name");
+                String email = result.getString("email");
+                String address = result.getString("address");
+                String phone = result.getString("phone");
+                String createdDate = result.getString("createdDate");
+                boolean doesRequireImaging = result.getBoolean("doesRequireImaging");
+                boolean isOutPatient = result.getBoolean("isOutPatient");
+                boolean isInPatient = result.getBoolean("isInPatient");
+                patients.add(new Patient(patientId, name, email, address, phone, createdDate, doesRequireImaging, isOutPatient, isInPatient));
+            }
+        } catch (SQLException e) {
+            // Handle any SQL exception
+            handleSQLException(e);
+        }
+        return patients;
+
     }
 
     public synchronized List<String> getTimesheetDatesForEmployeeLastWeek(Integer employeeID) {

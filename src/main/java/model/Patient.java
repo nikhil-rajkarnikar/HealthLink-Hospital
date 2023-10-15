@@ -19,13 +19,13 @@ public class Patient {
     private String phone;
     private String createdDate;
     private boolean doesRequireImaging = false;
-    private boolean isOutpatient = false;
+    private boolean isOutPatient = false;
     private boolean isInPatient = false;
     private StringProperty doesRequireImagingString;
     private StringProperty isInPatientString;
-    private StringProperty isOutpatientString;
+    private StringProperty isOutPatientString;
 
-    public Patient(int patientId, String name, String email, String address, String phone, String createdDate, boolean doesRequireImaging, boolean isOutpatient, boolean isInPatient) {
+    public Patient(int patientId, String name, String email, String address, String phone, String createdDate, boolean doesRequireImaging, boolean isOutPatient, boolean isInPatient) {
         this.patientId = patientId;
         this.name = name;
         this.email = email;
@@ -33,7 +33,7 @@ public class Patient {
         this.phone = phone;
         this.createdDate = createdDate;
         this.doesRequireImaging = doesRequireImaging;
-        this.isOutpatient = isOutpatient;
+        this.isOutPatient = isOutPatient;
         this.isInPatient = isInPatient;
     }
 
@@ -61,22 +61,6 @@ public class Patient {
         this.email = email;
     }
 
-    public boolean isIsInPatient() {
-        return isInPatient;
-    }
-
-    public void setIsInPatient(boolean isInPatient) {
-        this.isInPatient = isInPatient;
-    }
-
-    public boolean isIsOutpatient() {
-        return isOutpatient;
-    }
-
-    public void setIsOutpatient(boolean isOutpatient) {
-        this.isOutpatient = isOutpatient;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -93,7 +77,15 @@ public class Patient {
         this.phone = phone;
     }
 
-    public boolean isDoesRequireImaging() {
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public boolean getDoesRequireImaging() {
         return doesRequireImaging;
     }
 
@@ -101,12 +93,20 @@ public class Patient {
         this.doesRequireImaging = doesRequireImaging;
     }
 
-    public String getCreatedDate() {
-        return createdDate;
+    public boolean getIsOutPatient() {
+        return isOutPatient;
     }
 
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
+    public void setIsOutPatient(boolean isOutPatient) {
+        this.isOutPatient = isOutPatient;
+    }
+
+    public boolean getIsInPatient() {
+        return isInPatient;
+    }
+
+    public void setIsInPatient(boolean isInPatient) {
+        this.isInPatient = isInPatient;
     }
 
     public StringProperty getDoesRequireImagingString() {
@@ -125,11 +125,16 @@ public class Patient {
         this.isInPatientString = isInPatientString;
     }
 
-    public StringProperty getIsOutpatientString() {
-        return isOutpatientString;
+    public StringProperty getIsOutPatientString() {
+        return isOutPatientString;
     }
 
-    public void setIsOutpatientString(StringProperty isOutpatientString) {
-        this.isOutpatientString = isOutpatientString;
+    public void setIsOutPatientString(StringProperty isOutPatientString) {
+        this.isOutPatientString = isOutPatientString;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient ID: " + patientId + ", Name: " + name + ", Email: " + email; // Include the properties you want to display.
     }
 }
