@@ -80,7 +80,6 @@ public class CheckPatientDetailController extends BaseController {
 
         // Create an ObservableList from the list of employees
         ObservableList<Patient> patientData = FXCollections.observableArrayList(databaseModel.getAllPatients());
-        System.out.println("Patients->" + databaseModel.getAllPatients());
         // Set the data to the TableView
         patientTable.setItems(patientData);
 
@@ -117,7 +116,7 @@ public class CheckPatientDetailController extends BaseController {
 
             loginStage.setScene(scene);
             loginStage.show();
-//            editController.loadFields();
+            editController.loadFields();
 
         } catch (IOException e) {
             System.out.println("com.mycompany.healthlinkhospital.CheckEmployeeDetailController.navigateToEditEmployee() failed ==> " + e);
