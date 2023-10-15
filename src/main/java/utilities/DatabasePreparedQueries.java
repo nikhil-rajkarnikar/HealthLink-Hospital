@@ -91,7 +91,13 @@ public class DatabasePreparedQueries {
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         return dbConnection.prepareStatement(query);
     }
-
+    
+    public PreparedStatement getInsertAppointment() throws SQLException {
+        String query = "INSERT INTO appointment (appointmentDate, appointmentTime, doctorId, patientId, staffId, duration) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+        return dbConnection.prepareStatement(query);
+    }
+    
     public PreparedStatement checkSuperuserExists() throws SQLException {
         String query = "SELECT 1 FROM employee WHERE isManager = true LIMIT 1";
         return dbConnection.prepareStatement(query);
