@@ -13,17 +13,27 @@ public class Appointment {
     private Integer appointmentId;
     private String appointmentDate;
     private String appointmentTime;
+    private Integer doctorId;
     private Integer patientId;
     private Integer staffId;
     private Integer duration;
-
-    public Appointment(Integer appointmentId, String appointmentDate, String appointmentTime, Integer patientId, Integer staffId, Integer duration) {
+    
+    public Appointment(Integer appointmentId, String appointmentDate, String appointmentTime, Integer patientId, Integer staffId, Integer doctorId, Integer duration) {
         this.appointmentId = appointmentId;
         this.appointmentDate = appointmentDate;
         this.appointmentTime = appointmentTime;
+        this.doctorId = doctorId;
         this.patientId = patientId;
         this.staffId = staffId;
         this.duration = duration;
+    }
+
+    public Integer getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(Integer doctorId) {
+        this.doctorId = doctorId;
     }
 
     public Integer getAppointmentId() {

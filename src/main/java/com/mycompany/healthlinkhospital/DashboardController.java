@@ -120,11 +120,10 @@ public class DashboardController extends BaseController {
             stage.setTitle("Week's Hours Entry");
 
             AppointmentController attendanceController = loader.getController();
-            attendanceController.employee = employee;
+            attendanceController.staff = employee;
 
             // Show the week's hours entry form
             stage.show();
-            attendanceController.handleTimesheetLocked();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -170,10 +169,6 @@ public class DashboardController extends BaseController {
             addPatientButton.setVisible(employee.isManager());
             checkEmployeeDetailButton.setVisible(employee.isManager());
             personalDetailTextArea.setText(details.toString());
-
-            if (employee.getUid() == 1001) {
-                attendanceButton.setVisible(false);
-            }
         }
     }
 

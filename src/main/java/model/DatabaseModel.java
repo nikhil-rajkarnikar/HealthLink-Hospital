@@ -55,9 +55,7 @@ public class DatabaseModel {
     private void createTablesIfNotExists() {
         createEmployeeTableIfNotExists();
         createPatientTableIfNotExists();
-        createAttendaceTypeTableIfNotExists();
-        createAttendaceTableIfNotExists();
-        createAccountTableIfNotExists();
+        createAppointmentTableIfNotExists();
     }
 
     private void createEmployeeTableIfNotExists() {
@@ -79,26 +77,9 @@ public class DatabaseModel {
         }
     }
 
-    private void createAttendaceTypeTableIfNotExists() {
+    private void createAppointmentTableIfNotExists() {
         try ( Statement statement = dbConnection.createStatement()) {
-            statement.executeUpdate(DatabaseConstants.QRY_CREATE_ATTENDANCE_TYPE_TABLE);
-            insertDefaultAttendanceType();
-        } catch (SQLException e) {
-            handleSQLException(e);
-        }
-    }
-
-    private void createAttendaceTableIfNotExists() {
-        try ( Statement statement = dbConnection.createStatement()) {
-            statement.executeUpdate(DatabaseConstants.QRY_CREATE_ATTENDANCE_TABLE);
-        } catch (SQLException e) {
-            handleSQLException(e);
-        }
-    }
-
-    private void createAccountTableIfNotExists() {
-        try ( Statement statement = dbConnection.createStatement()) {
-            statement.executeUpdate(DatabaseConstants.QRY_CREATE_ACCOUNT_TABLE);
+            statement.executeUpdate(DatabaseConstants.QRY_CREATE_APPOINTMENT_TABLE);
         } catch (SQLException e) {
             handleSQLException(e);
         }
@@ -199,15 +180,17 @@ public class DatabaseModel {
             return false;
         }
     }
-
-    public boolean insertAccount(Account account) {
+    
+    public boolean insertAppointment(Appointment appt) {
         try {
-            PreparedStatement insertStatement = dbQueries.getInsertAccounts();
-            insertStatement.setString(1, account.getBankName());
-            insertStatement.setString(2, account.getAddedOn());
-            insertStatement.setDouble(3, account.getHourlyRate());
-            insertStatement.setInt(4, account.getEmployeeId());
-
+            PreparedStatement insertStatement = dbQueries.getInsertAppointment();
+            insertStatement.setString(1, appt.getAppointmentDate());
+            insertStatement.setString(2, appt.getAppointmentTime());
+            insertStatement.setInt(3, appt.getDoctorId());
+            insertStatement.setInt(4, appt.getPatientId());
+            insertStatement.setInt(5, appt.getStaffId());
+            insertStatement.setInt(6, appt.getDuration());
+            
             int rowsAffected = insertStatement.executeUpdate();
             return rowsAffected > 0;
 
@@ -216,15 +199,7 @@ public class DatabaseModel {
             return false;
         }
     }
-
-    private void insertDefaultAttendanceType() {
-        try ( Statement statement = dbConnection.createStatement()) {
-            statement.executeUpdate(DatabaseConstants.QRY_INSERT_ATTENDANCE_TYPE);
-        } catch (SQLException e) {
-            handleSQLException(e);
-        }
-    }
-
+    
     public synchronized HospitalStaff login(String email, String password) {
         try {
             String storedPassword = getPasswordFromDatabase(email);
