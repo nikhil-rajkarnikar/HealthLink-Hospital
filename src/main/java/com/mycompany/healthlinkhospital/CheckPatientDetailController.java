@@ -70,8 +70,14 @@ public class CheckPatientDetailController extends BaseController {
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
         isAdminColumn.setCellValueFactory(new PropertyValueFactory<>("isManagerString"));
+        
+        // Add buttons
+        // Set the cell factory for the column with the button
+        TableColumn<HospitalStaff, Void> detailColumn = new TableColumn<>("Detail");
+        detailColumn.setCellFactory(col -> new ButtontableCell<>(detailColumn));
+        detailColumn.setMinWidth(100);
 
-        employeeTable.getColumns().addAll(nameColumn, emailColumn, addressColumn, phoneColumn, isAdminColumn);
+        employeeTable.getColumns().addAll(nameColumn, emailColumn, addressColumn, phoneColumn, isAdminColumn, detailColumn);
 
         // Create an ObservableList from the list of employees
         ObservableList<HospitalStaff> employeeData = FXCollections.observableArrayList(databaseModel.getAllEmployees());
