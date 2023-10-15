@@ -45,7 +45,7 @@ public class DatabaseConstants {
             + "phone TEXT,"
             + "createdDate DATE,"
             + "doesRequireImaging BOOLEAN,"
-            + "isOutpatient BOOLEAN,"
+            + "isOutPatient BOOLEAN,"
             + "isInPatient BOOLEAN,"
             + "PRIMARY KEY (patientId)"
             + ") AUTO_INCREMENT = 1001;";

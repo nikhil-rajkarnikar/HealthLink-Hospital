@@ -98,7 +98,7 @@ public class DashboardController extends BaseController {
     private void handleSearchEmployeeButton() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("checkEmployeeDetail.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("checkPatientDetail.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             Stage registerStage = new Stage();

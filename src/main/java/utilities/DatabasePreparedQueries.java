@@ -38,6 +38,11 @@ public class DatabasePreparedQueries {
         return dbConnection.prepareStatement(query);
     }
 
+    public PreparedStatement getAllPatients() throws SQLException {
+        String query = "SELECT * FROM patient";
+        return dbConnection.prepareStatement(query);
+    }
+
     public PreparedStatement getEmployeeDetail(String email) throws SQLException {
         String query = "SELECT uid, name, email, isManager, address, phone FROM employee WHERE email = ?";
         PreparedStatement preparedStatement = dbConnection.prepareStatement(query);
@@ -46,7 +51,7 @@ public class DatabasePreparedQueries {
     }
 
     public PreparedStatement getPatientDetail(int patientId) throws SQLException {
-        String query = "SELECT name, email, address, phone, createdDate, doesRequireImaging, isOutpatient, isInPatient FROM patient WHERE patientId = ?";
+        String query = "SELECT name, email, address, phone, createdDate, doesRequireImaging, isOutPatient, isInPatient FROM patient WHERE patientId = ?";
         PreparedStatement preparedStatement = dbConnection.prepareStatement(query);
         preparedStatement.setInt(1, patientId);
         return preparedStatement;
@@ -82,7 +87,7 @@ public class DatabasePreparedQueries {
     }
 
     public PreparedStatement getInsertPatient() throws SQLException {
-        String query = "INSERT INTO patient (name, email, address, phone, createdDate, doesRequireImaging, isOutpatient, isInPatient) "
+        String query = "INSERT INTO patient (name, email, address, phone, createdDate, doesRequireImaging, isOutPatient, isInPatient) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         return dbConnection.prepareStatement(query);
     }

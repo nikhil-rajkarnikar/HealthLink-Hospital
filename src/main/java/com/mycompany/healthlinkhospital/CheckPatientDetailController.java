@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -23,9 +21,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import model.HospitalStaff;
 import model.Patient;
-import utilities.AlertUtils;
 
 /**
  * FXML Controller class
@@ -40,18 +36,20 @@ public class CheckPatientDetailController extends BaseController {
     @FXML
     private Button searchBtn;
 
-    @FXML
     private TextArea employeeDetailSearchArea;
 
     @FXML
-    private TableView<HospitalStaff> employeeTable;
+    private TableView<Patient> patientTable;
 
     // Create TableColumn objects
-    TableColumn<HospitalStaff, String> nameColumn = new TableColumn<>("Name");
-    TableColumn<HospitalStaff, String> emailColumn = new TableColumn<>("Email");
-    TableColumn<HospitalStaff, String> addressColumn = new TableColumn<>("Address");
-    TableColumn<HospitalStaff, String> phoneColumn = new TableColumn<>("Phone");
-    TableColumn<HospitalStaff, String> isAdminColumn = new TableColumn<>("Is Administrator");
+    TableColumn<Patient, String> nameColumn = new TableColumn<>("Name");
+    TableColumn<Patient, String> emailColumn = new TableColumn<>("Email");
+    TableColumn<Patient, String> addressColumn = new TableColumn<>("Address");
+    TableColumn<Patient, String> phoneColumn = new TableColumn<>("Phone");
+    TableColumn<Patient, String> createdDateColumn = new TableColumn<>("Created Date");
+    TableColumn<Patient, String> imagingRequiredColumn = new TableColumn<>("Imaging Required");
+    TableColumn<Patient, String> outPatientColumn = new TableColumn<>("Out Patient");
+    TableColumn<Patient, String> inPatientColumn = new TableColumn<>("In Patient");
 
     /**
      * Initializes the controller class.
@@ -59,7 +57,7 @@ public class CheckPatientDetailController extends BaseController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         super.initialize(url, rb);
-        // setupTableView();
+        setupTableView();
     }
 
     private void setupTableView() {
@@ -68,23 +66,25 @@ public class CheckPatientDetailController extends BaseController {
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        createdDateColumn.setCellValueFactory(new PropertyValueFactory<>("createdDate"));
+        imagingRequiredColumn.setCellValueFactory(new PropertyValueFactory<>("doesRequireImaging"));
+        outPatientColumn.setCellValueFactory(new PropertyValueFactory<>("isOutPatient"));
+        inPatientColumn.setCellValueFactory(new PropertyValueFactory<>("isInPatient"));
 
-        isAdminColumn.setCellValueFactory(new PropertyValueFactory<>("isManagerString"));
-
-        employeeTable.getColumns().addAll(nameColumn, emailColumn, addressColumn, phoneColumn, isAdminColumn);
+        patientTable.getColumns().addAll(nameColumn, emailColumn, addressColumn, phoneColumn, createdDateColumn, imagingRequiredColumn, outPatientColumn, inPatientColumn);
 
         // Create an ObservableList from the list of employees
-        ObservableList<HospitalStaff> employeeData = FXCollections.observableArrayList(databaseModel.getAllEmployees());
-
+        ObservableList<Patient> patientData = FXCollections.observableArrayList(databaseModel.getAllPatients());
+        System.out.println("Patients->" + databaseModel.getAllPatients());
         // Set the data to the TableView
-        employeeTable.setItems(employeeData);
+        patientTable.setItems(patientData);
 
-        employeeTable.setOnMouseClicked(event -> {
+        patientTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
 
-                HospitalStaff selectedEmployee = employeeTable.getSelectionModel().getSelectedItem();
-                if (selectedEmployee != null) {
-//                    navigateToEditEmployee(selectedEmployee);
+                Patient selectedPatient = patientTable.getSelectionModel().getSelectedItem();
+                if (selectedPatient != null) {
+                    navigateToEditPatient(selectedPatient);
                 }
             }
         });
@@ -98,9 +98,9 @@ public class CheckPatientDetailController extends BaseController {
         stage.close();
     }
 
-    private void navigateToEditEmployee(Patient patient) {
+    private void navigateToEditPatient(Patient patient) {
         try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("addEmployee.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("addPatient.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
@@ -120,40 +120,18 @@ public class CheckPatientDetailController extends BaseController {
     }
 
     @FXML
-    private void handleSearchEmployeeButton() throws SQLException {
-
+    private void handleSearchPatientButton() throws SQLException {
         String employeeEmail = searchField.getText();
 
-        employeeTable.getItems().stream()
+        patientTable.getItems().stream()
                 .filter(item -> (item.getEmail().equals(employeeEmail)))
                 .findAny()
                 .ifPresent(item -> {
-                    employeeTable.getSelectionModel().select(item);
-                    employeeTable.scrollTo(item);
+                    System.out.println("Search item =" + item);
+
+                    patientTable.getSelectionModel().select(item);
+                    patientTable.scrollTo(item);
                 });
-
     }
 
-    private void displayEmployeeDetails(HospitalStaff employee) {
-        if (employee != null) {
-            StringBuilder details = new StringBuilder();
-            details.append("Name: ").append(employee.getName()).append("\n");
-            details.append("Email: ").append(employee.getEmail()).append("\n");
-            details.append("Is Manager: ").append(employee.isManager()).append("\n");
-            employeeDetailSearchArea.setText(details.toString());
-        }
-    }
-
-    private boolean isValidEmail(String email) {
-        // Define a regular expression pattern for a valid email format
-        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
-
-        // Compile the pattern
-        Pattern pattern = Pattern.compile(emailRegex);
-
-        // Match the email against the pattern
-        Matcher matcher = pattern.matcher(email);
-
-        return matcher.matches();
-    }
 }

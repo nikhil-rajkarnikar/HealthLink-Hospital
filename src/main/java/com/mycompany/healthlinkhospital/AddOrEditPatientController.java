@@ -100,7 +100,7 @@ public class AddOrEditPatientController extends BaseController {
             patient.setPhone(phoneField.getText());
             patient.setCreatedDate(createdDateToString);
             patient.setDoesRequireImaging(isImagingRequired.isSelected());
-            patient.setIsOutpatient(isOutPatient.isSelected());
+            patient.setIsOutPatient(isOutPatient.isSelected());
             patient.setIsInPatient(isInPatient.isSelected());
 
             // edit patient
