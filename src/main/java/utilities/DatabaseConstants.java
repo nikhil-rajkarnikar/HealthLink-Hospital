@@ -21,6 +21,7 @@ public class DatabaseConstants {
     public static final String TABLE_EMPLOYEE = "employee";
     public static final String TABLE_PATIENT = "patient";
     public static final String TABLE_ACCOUNT = "account";
+    public static final String TABLE_BILLING = "billing";
    
     public static final String TABLE_APPOINTMENT = "appointment";
     public static final String QRY_CREATE_DB = "CREATE DATABASE IF NOT EXISTS " + MYSQL_DB;
@@ -60,6 +61,21 @@ public class DatabaseConstants {
             + " PRIMARY KEY (id),"
             + " FOREIGN KEY (patientId) REFERENCES " + TABLE_PATIENT + "(patientId)"
             + ");";
+    
+    
+    public static final String QRY_CREATE_BILLING_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_BILLING + " ("
+        + " id INT NOT NULL AUTO_INCREMENT,"
+        + " generatedDate VARCHAR(255),"
+        + " generatedTime VARCHAR(255),"
+        + " service INT null,"
+        + " amount DOUBLE NULL,"
+        + " appointmentId INT NOT NULL,"
+        + " patientId INT NOT NULL,"
+        + " PRIMARY KEY (id),"
+        + " FOREIGN KEY (patientId) REFERENCES " + TABLE_PATIENT + "(patientId)"
+//        + " FOREIGN KEY (appointmentId) REFERENCES " + TABLE_APPOINTMENT + "(appointmentId)"
+        + ");";
+
     
     // Only insert a superuser if the superuser is non existant or previously present
     public static final String QRY_INSERT_SUPERUSER = "INSERT INTO " + TABLE_EMPLOYEE + " (name, email, password, isManager, address, phone) "

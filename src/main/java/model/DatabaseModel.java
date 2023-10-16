@@ -56,6 +56,7 @@ public class DatabaseModel {
         createEmployeeTableIfNotExists();
         createPatientTableIfNotExists();
         createAppointmentTableIfNotExists();
+        createBillingTableIfNotExists();
     }
 
     private void createEmployeeTableIfNotExists() {
@@ -80,6 +81,14 @@ public class DatabaseModel {
     private void createAppointmentTableIfNotExists() {
         try ( Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(DatabaseConstants.QRY_CREATE_APPOINTMENT_TABLE);
+        } catch (SQLException e) {
+            handleSQLException(e);
+        }
+    }
+    
+    private void createBillingTableIfNotExists() {
+        try ( Statement statement = dbConnection.createStatement()) {
+            statement.executeUpdate(DatabaseConstants.QRY_CREATE_BILLING_TABLE);
         } catch (SQLException e) {
             handleSQLException(e);
         }
@@ -414,5 +423,28 @@ public class DatabaseModel {
     private void handleSQLException(SQLException e) {
         System.err.println("SQLState: " + e.getSQLState());
         System.err.println("Error Message: " + e.getMessage());
+    }
+    
+    public boolean insertPatientBilling(String generatedDate, String generatedTime, Double amount, Integer appointmentId, Integer patientId) {
+        try {
+//        if (getPatientDetails(email) == null) {
+            PreparedStatement insertStatement = dbQueries.getInsertPatientBilling();
+            insertStatement.setString(1, generatedDate);
+            insertStatement.setString(2, generatedTime);
+            insertStatement.setDouble(3, amount);
+            insertStatement.setInt(4, appointmentId);
+            insertStatement.setInt(5, patientId);            
+
+            int rowsAffected = insertStatement.executeUpdate();
+            return rowsAffected > 0; // Check if the insertion was successful
+//        } else {
+//            // Handle if the user is already present
+//            AlertUtils.showErrorAlert("Error", "Patient already exists");
+//            return false;
+//        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

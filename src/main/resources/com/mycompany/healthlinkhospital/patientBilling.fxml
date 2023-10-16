@@ -9,6 +9,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+
 
 <AnchorPane id="AnchorPane" prefHeight="452.0" prefWidth="504.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.healthlinkhospital.BillingInfoController">
    <children>
@@ -19,23 +22,19 @@
       </Label>
       <VBox alignment="CENTER" layoutX="24.0" layoutY="49.0" prefHeight="296.0" prefWidth="494.0" spacing="16.0" AnchorPane.bottomAnchor="66.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
          <children>
-            <Label style="-fx-background-color: white;" text="Fill the form below to register the patient" textFill="#979393">
+            <Label style="-fx-background-color: white;" text="Patient Billing form" textFill="#979393">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font></Label>
-            <TextField fx:id="nameTextField" prefHeight="27.0" prefWidth="294.0" promptText="Name" />
-            <TextField fx:id="emailTextField" prefHeight="27.0" prefWidth="294.0" promptText="Email" />
-            <TextField fx:id="addressField" prefHeight="27.0" prefWidth="294.0" promptText="Address" />
-            <DatePicker fx:id="generateDateField" editable="false" prefHeight="26.0" prefWidth="453.0" promptText="Generated Date" />
-            <DatePicker fx:id="generateTime" editable="false" prefHeight="26.0" prefWidth="453.0" promptText="Generated Date" />
-            <CheckBox fx:id="isImagingRequired" mnemonicParsing="false" prefHeight="18.0" prefWidth="456.0" text="Imaging Required" />
-            <CheckBox fx:id="isOutPatient" mnemonicParsing="false" prefHeight="18.0" prefWidth="463.0" text="Out Patient" />
-            <CheckBox fx:id="isInPatient" mnemonicParsing="false" prefHeight="18.0" prefWidth="456.0" text="In Patient" />
+            <Label fx:id="nameTextLabel" prefHeight="27.0" prefWidth="294.0" text="Patient Name" />
+
+            <ComboBox fx:id="serviceDropdown" prefHeight="27.0" prefWidth="294.0" promptText="Select Service" />
+           
          </children>
       </VBox>
       <HBox alignment="CENTER" layoutX="36.0" layoutY="387.0" prefHeight="46.0" prefWidth="456.0" spacing="16.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
          <children>
-            <Button fx:id="savePatientButton" mnemonicParsing="false" onAction="#handleSavePatientButton" style="-fx-background-color: green;" text="Save" textFill="WHITE" />
+            <Button fx:id="savePatientButton" mnemonicParsing="false" onAction="#handleSavePatientBillingButton" style="-fx-background-color: green;" text="Save" textFill="WHITE" />
             <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#closeWindow" text="Cancel" />
          </children>
       </HBox>

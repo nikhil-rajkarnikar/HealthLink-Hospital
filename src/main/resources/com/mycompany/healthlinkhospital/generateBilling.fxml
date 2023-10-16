@@ -18,7 +18,11 @@
 
                 <!-- Appointment Date -->
     <Text layoutX="96.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" />
-    <Text fx:id="appointmentDate" layoutX="233.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="date" />
+    <Text fx:id="generatedDate" layoutX="233.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="generatedDate" />
+    
+     <!-- Appointment Date -->
+    <Text layoutX="96.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" />
+    <Text fx:id="generatedTime" layoutX="233.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="generatedTime" />
     
     <!-- Service Name -->
     <Text layoutX="96.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Name:" />
