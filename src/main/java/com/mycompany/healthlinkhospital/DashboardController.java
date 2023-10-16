@@ -189,7 +189,7 @@ public class DashboardController extends BaseController {
         List<XYChart.Data<String, Integer>> data = databaseModel.getInPatientReport();
         for (XYChart.Data<String, Integer> record : data) {
             series1.getData().add(record);
-            System.out.println("a:" + record.getXValue() + ":" + record.getYValue());
+
         }
         lineChartPatient.getData().add(series1);
     }
@@ -200,34 +200,32 @@ public class DashboardController extends BaseController {
         List<XYChart.Data<String, Integer>> data = databaseModel.getOutPatientReport();
         for (XYChart.Data<String, Integer> record : data) {
             series1.getData().add(record);
-            System.out.println("a:" + record.getXValue() + ":" + record.getYValue());
         }
         lineChartPatient.getData().add(series1);
     }
-
+    private void getOutRevenueReport(){
+        XYChart.Series series1 = new XYChart.Series();
+        series1.setName("O/Patient Revenue");
+        List<XYChart.Data<String, Integer>> data = databaseModel.getOutRevenueReport();
+        for (XYChart.Data<String, Integer> record : data) {
+            series1.getData().add(record);
+        }
+        lineChartRevenue.getData().add(series1);
+    }
+    private void getInRevenueReport(){
+        XYChart.Series series1 = new XYChart.Series();
+        series1.setName("I/Patient Revenue");
+        List<XYChart.Data<String, Integer>> data = databaseModel.getInRevenueReport();
+        for (XYChart.Data<String, Integer> record : data) {
+            series1.getData().add(record);
+        }
+        lineChartRevenue.getData().add(series1);
+    }
+    
     private void getReport() {
         getInPatientReport();
         getOutPatientReport();
-        XYChart.Series series3 = new XYChart.Series();
-        series3.setName("OutBound Revenue"); //setting series name (appear as legends)
-        series3.getData().add(new XYChart.Data("Mon", 2023));
-        series3.getData().add(new XYChart.Data("Tue", 1022));
-        series3.getData().add(new XYChart.Data("Wed", 1022));
-        series3.getData().add(new XYChart.Data("Thu", 2422));
-        series3.getData().add(new XYChart.Data("Fri", 3022));
-        series3.getData().add(new XYChart.Data("Sat", 3022));
-        series3.getData().add(new XYChart.Data("Sun", 2222));
-        lineChartRevenue.getData().add(series3);
-        XYChart.Series series4 = new XYChart.Series();
-        series4.setName("OutBound Revenue"); //setting series name (appear as legends)
-        series4.getData().add(new XYChart.Data("Mon", 2044));
-        series4.getData().add(new XYChart.Data("Tue", 104));
-        series4.getData().add(new XYChart.Data("Wed", 1044));
-        series4.getData().add(new XYChart.Data("Thu", 244));
-        series4.getData().add(new XYChart.Data("Fri", 3044));
-        series4.getData().add(new XYChart.Data("Sat", 3044));
-        series4.getData().add(new XYChart.Data("Sun", 2244));
-        lineChartRevenue.getData().add(series4);
-
+        getInRevenueReport();
+        getOutRevenueReport();
     }
 }

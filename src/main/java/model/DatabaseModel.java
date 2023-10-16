@@ -345,6 +345,40 @@ public class DatabaseModel {
 
         return data;
     }
+    public List<XYChart.Data<String, Integer>> getInRevenueReport() {
+        List<XYChart.Data<String, Integer>> data = new ArrayList<>();
+        try {
+            PreparedStatement getInPatients = dbQueries.getInboundRevenue();
+            ResultSet resultSet = getInPatients.executeQuery();
+
+            while (resultSet.next()) {
+                String day = resultSet.getString("days");
+                int count = resultSet.getInt("count");
+                data.add(new XYChart.Data(day, count));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return data;
+    }
+    public List<XYChart.Data<String, Integer>> getOutRevenueReport() {
+        List<XYChart.Data<String, Integer>> data = new ArrayList<>();
+        try {
+            PreparedStatement getInPatients = dbQueries.getOutboundRevenue();
+            ResultSet resultSet = getInPatients.executeQuery();
+
+            while (resultSet.next()) {
+                String day = resultSet.getString("days");
+                int count = resultSet.getInt("count");
+                data.add(new XYChart.Data(day, count));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return data;
+    }
 
     public Patient getPatientDetails(int patientId) {
         try {
