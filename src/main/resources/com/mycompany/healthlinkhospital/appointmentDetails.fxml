@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
@@ -15,5 +16,10 @@
             <Font name="System Bold" size="24.0" />
          </font></Label>
       <Label layoutX="15.0" layoutY="88.0" prefHeight="17.0" prefWidth="92.0" text="Patient Details" />
+      <Button layoutX="450.0" layoutY="34.0" mnemonicParsing="false" onAction="#addAppointmentButtonTapped" prefHeight="26.0" prefWidth="135.0" style="-fx-background-color: green;" text="Add appointment" textFill="WHITE" AnchorPane.rightAnchor="16.0">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
