@@ -45,6 +45,7 @@ public class AppointmentDetailsController extends BaseController {
     TableColumn<Appointment, String> appointmentTimeColumn = new TableColumn<>("Appointment Time");
     TableColumn<Appointment, Void> editColumn = new TableColumn<>("Edit");
     TableColumn<Appointment, Void> deleteColumn = new TableColumn<>("Delete");
+    TableColumn<Appointment, Void> billingColumn = new TableColumn<>("Billing");
 
     /**
      * Initializes the controller class.
@@ -181,8 +182,57 @@ public class AppointmentDetailsController extends BaseController {
                 }
             };
         });
+        
+        billingColumn.setCellFactory(column -> {
+            return new TableCell<Appointment, Void>() {
+                private final Button billingButton = new Button("Billing");
+                {
+                    billingButton.setOnAction(event -> {
+                        Appointment appointment = getTableView().getItems().get(getIndex());
+                         try {
+                            // Load the FXML file for the detail view
+                            FXMLLoader loader = new FXMLLoader(App.class.getResource("patientBilling.fxml"));
+                            Parent root = loader.load();
 
-        appointmentTable.getColumns().addAll(appointmentDateColumn, appointmentTimeColumn, editColumn, deleteColumn);
+                            // Pass the patient data to the controller of the detail view
+                            BillingInfoController billingDetailController = loader.getController();
+                            billingDetailController.appointment = appointment;
+                            billingDetailController.setPatient(patient);
+
+                            // Create a new scene for the detail view
+                            Scene detailScene = new Scene(root);
+
+                            // Create a new stage (window) for the detail view
+                            Stage billingStage = new Stage();
+                            billingStage.setTitle("Billing Details");
+                            billingStage.setScene(detailScene);
+
+                            // Show the detail view
+                            billingStage.show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+                
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        Appointment appointment = getTableView().getItems().get(getIndex());                       
+                            setGraphic(billingButton);                       
+
+                    }
+                }
+
+                  
+            };
+        });
+
+        appointmentTable.getColumns().addAll(appointmentDateColumn, appointmentTimeColumn, editColumn, deleteColumn, billingColumn);
 
         addItemsInTable();
 

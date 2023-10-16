@@ -185,6 +185,15 @@ public class DatabasePreparedQueries {
         preparedStatement.setInt(1, patientId);
         return preparedStatement;
     }
+    
+    public PreparedStatement getPatientBillingDetail(int patientId, int appointmentId) throws SQLException {
+        String query = "SELECT p.id, p.name, b.id, b.generatedDate, b.generatedTime, b.service, b.amount" +
+                "FROM billing AS b JOIN appointment AS a ON p.id = b.appointmentId Join patient AS p ON p.id = b.patientId" +
+                "WHERE p.id =? AND a.id =?";
+        PreparedStatement preparedStatement = dbConnection.prepareStatement(query);
+        preparedStatement.setInt(patientId, appointmentId);
+        return preparedStatement;
+    }
 
     public PreparedStatement getTimesheetDatesForEmployeeLastWeek(Integer employeeID) throws SQLException {
         // Calculate the date range for the last week

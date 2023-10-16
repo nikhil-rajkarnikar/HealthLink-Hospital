@@ -62,6 +62,18 @@ public class Billing {
         return appointmentId;
     }
 
+   @Override
+    public String toString() {
+        return "Billing{" +
+           "billingId=" + billingId +
+           ", generatedDate=" + generatedDate +
+           ", generatedTime=" + generatedTime +
+           ", amount=" + amount +
+           ", appointmentId=" + appointmentId +
+           ", patientId=" + patientId +
+           '}';
+    }
+
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }

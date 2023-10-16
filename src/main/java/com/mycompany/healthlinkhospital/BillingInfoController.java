@@ -14,12 +14,20 @@ import java.time.format.DateTimeFormatter;
 import javafx.scene.control.ComboBox;
 import model.Patient;
 import model.Service;
+import model.Appointment;
+import model.Billing;
 import utilities.AlertUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 
 /**
@@ -48,6 +56,11 @@ public class BillingInfoController extends BaseController{
     private ComboBox<Service> serviceDropdown;
     @FXML
     private Button cancelButton;
+    @FXML
+    private Button saveBillingButton;
+    
+    Appointment appointment = null;
+    Billing billing = new Billing(1, "2023/10/14", "10:30", 20.00, 1001, 1);
     
     
     public void initialize(URL url, ResourceBundle rb)
@@ -58,7 +71,7 @@ public class BillingInfoController extends BaseController{
         {
             setPatient(patient);
         }
-        
+                
     }
     
     public void setPatient(Patient patient)
@@ -66,7 +79,6 @@ public class BillingInfoController extends BaseController{
         this.patient = patient;
         
         nameTextLabel.setText(patient.getName());
-        
     }
     
     
@@ -75,35 +87,39 @@ public class BillingInfoController extends BaseController{
     private void handleSavePatientBillingButton() {
         String createdDateToString = "";
         LocalDate localDate = LocalDate.now();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("mm-dd-YYYY");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
         
         LocalTime localTime = LocalTime.now();
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         
-
-        // Add billing
-        if (patient == null) {
+        System.out.println(patient);
+//        if (patient == null) {
 //            String patientId = patientFullName.getText();
             String generatedDate = localDate.format(dateFormatter);
             String generatedTime = localTime.format(timeFormatter);
             Double amount = calculateAmount();
-            Integer appointmentId = 1;
-            Integer patientId =1;
+            Integer appointmentId = appointment.getAppointmentId();
+            Integer patientId = patient.getPatientId();
+            
+        
+            Service selectedService = serviceDropdown.getValue();
             // Insert the patient into the patient table using your database model
             if (databaseModel.insertPatientBilling(generatedDate, generatedTime, amount, appointmentId, patientId)) {
 
-                Patient recentlyCreatedPatient = databaseModel.getPatientDetails(1);
-                System.out.println("recentlyCreatedPatient ->" + recentlyCreatedPatient);
+                Billing recentlyCreatedBilling = databaseModel.getBillingPatientDetails(patientId, appointmentId);
+//                System.out.println("recentlyCreatedPatient ->" + recentlyCreatedBilling);
+                
 
-                AlertUtils.showConfirmationAlert("Success", "Patient successfully added");
+                AlertUtils.showConfirmationAlert("Success", "Patient billing successfully added");
 
                 AlertUtils.showConfirmationAlert("Success", "Patient billing successfully registered. Click close to return back to the dashboard or register another patient");
 //                clearFields();
             }
-        } 
+//        } 
         }
     public double calculateAmount()
     {
+       
         return 0.0;
         
     }
@@ -116,5 +132,31 @@ public class BillingInfoController extends BaseController{
         // do what you have to do
         stage.close();
     }
+    
+    @FXML
+    private void printPdf() {
+        try {
+            PDDocument document = new PDDocument();
+            PDPage page = new PDPage();
+            document.addPage(page);
+
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(100, 700);
+            contentStream.showText(patient.toString());
+            contentStream.showText(appointment.toString());
+//            contentStream.showText(billing.toString());
+            contentStream.endText();
+            contentStream.close();
+
+            document.save("pdf.pdf");
+            document.close();
+
+            System.out.println("PDF created successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+}
 

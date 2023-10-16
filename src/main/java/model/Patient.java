@@ -135,14 +135,14 @@ public class Patient {
 
     @Override
     public String toString() {
-        return "Patient ID: " + patientId + "\n"
-                + "Name: " + name + "\n"
-                + "Email: " + email + "\n"
-                + "Address: " + address + "\n"
-                + "Phone: " + phone + "\n"
-                + "Created Date: " + createdDate + "\n"
-                + "Requires Imaging: " + doesRequireImaging + "\n"
-                + "Is Outpatient: " + isOutPatient + "\n"
+        return "Patient ID: " + patientId + "<br>"
+                + "Name: " + name + "<br>"
+                + "Email: " + email + "<br>"
+                + "Address: " + address + "<br>"
+                + "Phone: " + phone + "<br>"
+                + "Created Date: " + createdDate + "<br>"
+                + "Requires Imaging: " + doesRequireImaging + "<br>"
+                + "Is Outpatient: " + isOutPatient + "<br>"
                 + "Is Inpatient: " + isInPatient;
     }
 }
