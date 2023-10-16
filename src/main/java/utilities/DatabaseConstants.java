@@ -15,7 +15,7 @@ public class DatabaseConstants {
     public static final String MYSQL_URL = "jdbc:mysql://127.0.0.1:3306";
     public static final String DB_URL = MYSQL_URL + "/" + MYSQL_DB + "?useSSL=false";
     public static final String USER_NAME = "root";
-    public static final String PASSWORD = "adminnik";
+    public static final String PASSWORD = "admin";
 
     // table names
     public static final String TABLE_EMPLOYEE = "employee";
