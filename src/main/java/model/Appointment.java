@@ -9,6 +9,8 @@ package model;
  * @author pukarsharma
  */
 public class Appointment {
+
+    
     
     private Integer appointmentId;
     private String appointmentDate;
@@ -83,4 +85,14 @@ public class Appointment {
     public void setDuration(Integer duration) {
         this.duration = duration;
     }
+
+    @Override
+    public String toString() {
+        return "Appointment{" + "<br>" + "appointmentId=" + "<br>" + appointmentId + "<br>" + ", appointmentDate=" + "<br>" + appointmentDate + "<br>" + ", appointmentTime=" + "<br>" +
+                appointmentTime + "<br>" + ", doctorId=" + "<br>" + doctorId + "<br>" + ", patientId=" + "<br>" + patientId + "<br>" + ", staffId=" + "<br>" + staffId + "<br>" + ", "
+                + "duration=" + "<br>" + duration + "<br>" + '}';
+    }
+
+   
+    
 }

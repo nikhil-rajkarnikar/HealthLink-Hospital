@@ -10,7 +10,10 @@ package model;
  */
 public enum Service {    
     xray(1, 10, "X-ray"),
-    bloodTest(2, 20, "Blood Test");
+    bloodTest(2, 20, "Blood Test"),
+    dental(3, 30, "Dental"),
+    cardiology(4, 40, "Cardiology"),
+    cancer(5, 50, "Cancer");
     
     private final String label;
     private final int value1;

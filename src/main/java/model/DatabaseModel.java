@@ -523,14 +523,30 @@ public class DatabaseModel {
 
             int rowsAffected = insertStatement.executeUpdate();
             return rowsAffected > 0; // Check if the insertion was successful
-//        } else {
-//            // Handle if the user is already present
-//            AlertUtils.showErrorAlert("Error", "Patient already exists");
-//            return false;
-//        }
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    public Billing getBillingPatientDetails(int patientId, int appointmentId) {
+        try {
+            PreparedStatement getPatientBillingDetailsStatement = dbQueries.getPatientBillingDetail(patientId, appointmentId);
+            ResultSet result = getPatientBillingDetailsStatement.executeQuery();
+            if (result.next()) {
+                String id = result.getString("id");
+                String generatedDate = result.getString("generatedDate");
+                String generatedTime = result.getString("generatedTime");
+                int service = result.getInt("service");
+                Double amount = result.getDouble("amount");               
+
+                return new Billing(0, generatedDate, generatedTime, amount, patientId, appointmentId);
+            }
+        } catch (SQLException e) {
+            // Handle any SQL exception
+            handleSQLException(e);
+        }
+        return null;
     }
 }

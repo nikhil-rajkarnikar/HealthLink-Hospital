@@ -34,8 +34,9 @@
       </VBox>
       <HBox alignment="CENTER" layoutX="36.0" layoutY="387.0" prefHeight="46.0" prefWidth="456.0" spacing="16.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
          <children>
-            <Button fx:id="savePatientButton" mnemonicParsing="false" onAction="#handleSavePatientBillingButton" style="-fx-background-color: green;" text="Save" textFill="WHITE" />
+            <Button fx:id="saveBillingButton" mnemonicParsing="false" onAction="#handleSavePatientBillingButton" style="-fx-background-color: green;" text="Save" textFill="WHITE" />
             <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#closeWindow" text="Cancel" />
+            <Button fx:id="printButton" mnemonicParsing="false" onAction="#printPdf" text="Print" />
          </children>
       </HBox>
    </children>
