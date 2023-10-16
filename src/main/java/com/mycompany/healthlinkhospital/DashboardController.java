@@ -83,7 +83,7 @@ public class DashboardController extends BaseController {
 
     @FXML
     private void handleAddPatientButton() {
-        // Load and display the register view (assuming "register.fxml" is the register page)
+        // Load and display the add patient view
 
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("addPatient.fxml"));
@@ -149,8 +149,6 @@ public class DashboardController extends BaseController {
             details.append("Address: ").append(employee.getAddress()).append("\n");
             details.append("Phone number: ").append(employee.getPhone()).append("\n");
 
-            addPatientButton.setVisible(employee.isManager());
-            checkEmployeeDetailButton.setVisible(employee.isManager());
             personalDetailTextArea.setText(details.toString());
         }
     }
@@ -185,27 +183,28 @@ public class DashboardController extends BaseController {
         taxBrackets.add(new PayrollSystem.TaxBracket(20001, 30000, 0.20)); // 20% tax on income between 20,001 and 30,000
     }
 
-    private void getInPatientReport(){
+    private void getInPatientReport() {
         XYChart.Series series1 = new XYChart.Series();
         series1.setName("InBound Patient");
         List<XYChart.Data<String, Integer>> data = databaseModel.getInPatientReport();
         for (XYChart.Data<String, Integer> record : data) {
             series1.getData().add(record);
-            System.out.println("a:"+ record.getXValue() +":"+ record.getYValue());
+            System.out.println("a:" + record.getXValue() + ":" + record.getYValue());
         }
         lineChartPatient.getData().add(series1);
     }
-    private void getOutPatientReport(){
+
+    private void getOutPatientReport() {
         XYChart.Series series1 = new XYChart.Series();
         series1.setName("OutBound Patient");
         List<XYChart.Data<String, Integer>> data = databaseModel.getOutPatientReport();
         for (XYChart.Data<String, Integer> record : data) {
             series1.getData().add(record);
-            System.out.println("a:"+ record.getXValue() +":"+ record.getYValue());
+            System.out.println("a:" + record.getXValue() + ":" + record.getYValue());
         }
         lineChartPatient.getData().add(series1);
     }
-    
+
     private void getReport() {
         getInPatientReport();
         getOutPatientReport();

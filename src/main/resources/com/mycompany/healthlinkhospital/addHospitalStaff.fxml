@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="452.0" prefWidth="504.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.healthlinkhospital.AddHospitalStaffController">
+    <children>
+        <Label layoutX="176.0" layoutY="32.0" text="Register Hospital Staff">
+            <font>
+                <Font name="System Bold" size="19.0" />
+            </font>
+        </Label>
+        <VBox alignment="CENTER" layoutY="82.0" prefHeight="296.0" prefWidth="494.0" spacing="16.0" AnchorPane.bottomAnchor="71.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
+            <children>
+                <Label style="-fx-background-color: white;" text="Fill the form below to register the staff" textFill="#979393">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="nameTextField" prefHeight="27.0" prefWidth="294.0" promptText="Name" />
+                <TextField fx:id="emailTextField" prefHeight="27.0" prefWidth="294.0" promptText="Email" />
+                <TextField fx:id="passwordField" prefHeight="27.0" prefWidth="294.0" promptText="Password" />
+                <TextField fx:id="addressField" prefHeight="27.0" prefWidth="294.0" promptText="Address" />
+                <TextField fx:id="phoneField" prefHeight="27.0" prefWidth="294.0" promptText="Phone" />
+                <CheckBox fx:id="isAdminCheckBox" mnemonicParsing="false" prefHeight="25.0" prefWidth="453.0" text="is Administrator" />
+            </children>
+        </VBox>
+        <HBox alignment="CENTER" layoutX="36.0" layoutY="387.0" prefHeight="46.0" prefWidth="456.0" spacing="16.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0">
+            <children>
+                <Button fx:id="saveEmployeeButton" mnemonicParsing="false" onAction="#handleSaveEmployeeButton" style="-fx-background-color: green;" text="Save" textFill="WHITE" />
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#closeWindow" text="Cancel" />
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>
