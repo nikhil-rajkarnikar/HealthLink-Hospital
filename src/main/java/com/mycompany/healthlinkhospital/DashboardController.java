@@ -30,15 +30,12 @@ public class DashboardController extends BaseController {
     private Button checkEmployeeDetailButton;
     @FXML
     private Button logoutButton;
-    @FXML
-    private Button attendanceButton;
+
     @FXML
     private TextArea personalDetailTextArea;
     @FXML
     private TextArea accountsTextArea;
 
-//    @FXML
-//    private TextArea taxTextArea;
     protected ObservableList checkinType = FXCollections.observableArrayList(new ArrayList<>(EnumSet.allOf(CheckinType.class)));
 
     public HospitalStaff employee = null;
@@ -110,26 +107,6 @@ public class DashboardController extends BaseController {
             Stage registerStage = new Stage();
             registerStage.setScene(scene);
             registerStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void handleAddTimesheetButton() {
-        try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("appointment.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Week's Hours Entry");
-
-            AppointmentController attendanceController = loader.getController();
-            
-
-            // Show the week's hours entry form
-            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
