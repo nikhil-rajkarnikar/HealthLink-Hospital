@@ -7,7 +7,10 @@ package com.mycompany.healthlinkhospital;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -122,6 +125,13 @@ public class CheckPatientDetailController extends BaseController {
             System.out.println("com.mycompany.healthlinkhospital.CheckEmployeeDetailController.navigateToEditEmployee() failed ==> " + e);
         }
     }
+
+//    public void refreshPatientList() {
+//        // Make sure that databaseModel is properly initialized and not null
+//
+//        patientTable.setItems((ObservableList<Patient>) databaseModel.getAllPatients());
+//
+//    }
 
     @FXML
     private void handleSearchPatientButton() throws SQLException {

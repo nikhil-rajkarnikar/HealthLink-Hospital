@@ -72,6 +72,7 @@ public class AddOrEditPatientController extends BaseController {
     @FXML
     private void handleSavePatientButton() {
         String createdDateToString = "";
+        LocalDate createdDate;
 
         // Add patient
         if (patient == null) {
@@ -79,7 +80,7 @@ public class AddOrEditPatientController extends BaseController {
             String email = emailTextField.getText();
             String address = addressField.getText();
             String phone = phoneField.getText();
-            LocalDate createdDate = createdDateField.getValue();
+            createdDate = createdDateField.getValue();
             boolean imagingRequired = isImagingRequired.isSelected();
             boolean outPatient = isOutPatient.isSelected();
             boolean inPatient = isInPatient.isSelected();
@@ -105,7 +106,7 @@ public class AddOrEditPatientController extends BaseController {
             patient.setEmail(emailTextField.getText());
             patient.setAddress(addressField.getText());
             patient.setPhone(phoneField.getText());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String formattedDate = createdDateField.getValue().format(formatter);
             patient.setCreatedDate(formattedDate);
             patient.setDoesRequireImaging(isImagingRequired.isSelected());
@@ -115,7 +116,8 @@ public class AddOrEditPatientController extends BaseController {
             // edit patient
             if (databaseModel.updatePatient(patient)) {
 
-                AlertUtils.showConfirmationAlert("Success", "Patient successfully updated. Click close to return back to the dashboard or add another patient");
+                AlertUtils.showConfirmationAlert("Success", "Patient successfully updated. ");
+
                 closeWindow();
             }
         }
@@ -140,6 +142,7 @@ public class AddOrEditPatientController extends BaseController {
         addressField.setText(patient.getAddress());
         phoneField.setText(patient.getPhone());
         createdDateField.setValue(LocalDate.parse(patient.getCreatedDate()));
+//        createdDateField.setDisable(true);
         isImagingRequired.setSelected(patient.getDoesRequireImaging());
         isOutPatient.setSelected(patient.getIsOutPatient());
         isInPatient.setSelected(patient.getIsInPatient());
