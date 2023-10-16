@@ -112,7 +112,7 @@ public class DashboardController extends BaseController {
     @FXML
     private void handleAddTimesheetButton() {
         try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("attendance.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("appointment.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -120,7 +120,7 @@ public class DashboardController extends BaseController {
             stage.setTitle("Week's Hours Entry");
 
             AppointmentController attendanceController = loader.getController();
-            attendanceController.staff = employee;
+            
 
             // Show the week's hours entry form
             stage.show();

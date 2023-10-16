@@ -135,6 +135,14 @@ public class Patient {
 
     @Override
     public String toString() {
-        return "Patient ID: " + patientId + ", Name: " + name + ", Email: " + email; // Include the properties you want to display.
+        return "Patient ID: " + patientId + "\n"
+                + "Name: " + name + "\n"
+                + "Email: " + email + "\n"
+                + "Address: " + address + "\n"
+                + "Phone: " + phone + "\n"
+                + "Created Date: " + createdDate + "\n"
+                + "Requires Imaging: " + doesRequireImaging + "\n"
+                + "Is Outpatient: " + isOutPatient + "\n"
+                + "Is Inpatient: " + isInPatient;
     }
 }

@@ -5,6 +5,8 @@
 package com.mycompany.healthlinkhospital;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,10 +16,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 import model.Appointment;
-import model.HospitalStaff;
 import utilities.AlertUtils;
 import model.Doctor;
-import model.Patient;
 
 /**
  * AppointmentController class
@@ -28,25 +28,25 @@ public class AppointmentController extends BaseController {
 
     @FXML
     private ComboBox<Doctor> checkinTypeCombobox;
-    
+
     @FXML
     private ComboBox<String> timeComboBox;
-    
+
     @FXML
     private DatePicker appointmentDateField;
 
     @FXML
     private Button saveButton;
-    
+
     protected ObservableList<Doctor> doctor = FXCollections.observableArrayList(
             Doctor.DrAsthana,
             Doctor.DrMunna,
             Doctor.DrSuman
     );
-    
-    HospitalStaff staff = null;
-    Patient patient = new Patient(1001, "", "", "", "", "", true, false, true);
 
+    public int patientId = 0;
+    public Appointment appointment = null;
+   
     /**
      * Initializes the controller class.
      */
@@ -57,11 +57,11 @@ public class AppointmentController extends BaseController {
 
         // load dates for the last week
         loadDefaultDatesForDoctors();
-        
+
         // set the fefault combobox selected 
         checkinTypeCombobox.setValue(Doctor.DrAsthana);
         timeComboBox.getItems().addAll(Doctor.DrAsthana.getAvailableTimes());
-        
+
         // load appointment times
         checkinTypeCombobox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
             System.out.println(newValue);
@@ -85,6 +85,22 @@ public class AppointmentController extends BaseController {
         Doctor.DrSuman.addAvailableTimesIn30MinuteIntervals("11:00", "14:00");
     }
 
+    public final LocalDate getLocalDate(String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(dateString, formatter);
+        return localDate;
+    }
+
+    public void loadAppointment() {
+        if (appointment != null) {
+            try {
+                appointmentDateField.setValue(getLocalDate(appointment.getAppointmentDate()));
+                timeComboBox.setValue(appointment.getAppointmentTime());
+            } catch (NullPointerException e) {
+            }
+        }
+    }
+
     @FXML
     private void handleSaveButton() {
 
@@ -94,33 +110,43 @@ public class AppointmentController extends BaseController {
         Doctor selectedDoctor = checkinTypeCombobox.getSelectionModel().getSelectedItem();
         String time = "";
         String date = "";
-        
+
         // handle edge cases
-        if(appointmentDateField.getValue() != null) {
+        if (appointmentDateField.getValue() != null) {
             date = appointmentDateField.getValue().toString();
         }
-        
-        if(timeComboBox.getSelectionModel().getSelectedItem() != null) {
-            time = timeComboBox.getSelectionModel().getSelectedItem(); 
+
+        if (timeComboBox.getSelectionModel().getSelectedItem() != null) {
+            time = timeComboBox.getSelectionModel().getSelectedItem();
         }
-       
-        if(date.isEmpty() || time.isEmpty()) {
+
+        if (date.isEmpty() || time.isEmpty()) {
             AlertUtils.showErrorAlert("Error", "Please enter appointment date/time");
             return;
         }
-        
+
         // Start insertion process
-        Appointment appointment = new Appointment(0, date, time, patient.getPatientId(), staff.getUid(), selectedDoctor.getId(),30);
-        
-            // Insert the hours worked for the current day into the database using your database model
-            if (databaseModel.insertAppointment(appointment)) {
+        Appointment _appointment;
+
+        if (appointment == null) { // insert
+           
+            _appointment = new Appointment(0, date, time, patientId, 0, selectedDoctor.getId(), 30);
+            
+            if (databaseModel.insertAppointment(_appointment)) {
                 isSaved = true;
             }
+        } else { // update
+            
+            _appointment = new Appointment(appointment.getAppointmentId(), date, time, 0, 0, 0, 0);
+            if (databaseModel.updateAppointment(_appointment)) {
+                isSaved = true;
+            }
+        }
         if (isSaved) {
             AlertUtils.showConfirmationAlert("Success", "Appointment saved successfully");
             closeWindow();
         } else {
-            AlertUtils.showErrorAlert("Error", "Error saving the attendance, please try again");
+            AlertUtils.showErrorAlert("Error", "Error saving the appointment, please try again");
         }
     }
 }

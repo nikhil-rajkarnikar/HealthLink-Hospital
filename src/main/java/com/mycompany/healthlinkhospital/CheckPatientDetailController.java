@@ -4,6 +4,7 @@
  */
 package com.mycompany.healthlinkhospital;
 
+import com.mycompany.healthlinkhospital.TableCells.ButtontableCell;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -50,7 +51,7 @@ public class CheckPatientDetailController extends BaseController {
     TableColumn<Patient, String> imagingRequiredColumn = new TableColumn<>("Imaging Required");
     TableColumn<Patient, String> outPatientColumn = new TableColumn<>("Out Patient");
     TableColumn<Patient, String> inPatientColumn = new TableColumn<>("In Patient");
-    TableColumn<Patient, Void> detailColumn = new TableColumn<>("Detail");
+    TableColumn<Patient, Void> detailColumn = new TableColumn<>("Appointment Detail");
 
     /**
      * Initializes the controller class.
