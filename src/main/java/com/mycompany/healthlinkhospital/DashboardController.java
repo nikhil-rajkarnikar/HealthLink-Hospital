@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Account;
@@ -35,9 +37,8 @@ public class DashboardController extends BaseController {
     @FXML
     private TextArea accountsTextArea;
 
-    @FXML
-    private TextArea taxTextArea;
-
+//    @FXML
+//    private TextArea taxTextArea;
     protected ObservableList checkinType = FXCollections.observableArrayList(new ArrayList<>(EnumSet.allOf(CheckinType.class)));
 
     public HospitalStaff employee = null;
@@ -45,11 +46,16 @@ public class DashboardController extends BaseController {
     public Patient patient = null;
 
     List<PayrollSystem.TaxBracket> taxBrackets = new ArrayList<>();
+    @FXML
+    private LineChart<?, ?> lineChartPatient;
+    @FXML
+    private LineChart<?, ?> lineChartRevenue;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         super.initialize(url, rb);
         addTaxBrackets();
+        getReport();
     }
 
     @FXML
@@ -185,12 +191,12 @@ public class DashboardController extends BaseController {
                     taxDetails.append("Your per hour work rate is: ").append(account.getHourlyRate()).append("\n");
                     taxDetails.append("Your taxable income per year is calculated as:  ").append(taxableIncome).append("\n");
                     taxDetails.append("Your predicted (before claims) income tax for current fiscal year is: $").append(incomeTax).append("\n");
-                    taxTextArea.setText(taxDetails.toString());
+                    //taxTextArea.setText(taxDetails.toString());
                 }
             } else {
                 StringBuilder taxDetails = new StringBuilder();
                 taxDetails.append("The super user doesn't have any tax information logged. ");
-                taxTextArea.setText(taxDetails.toString());
+                //taxTextArea.setText(taxDetails.toString());
             }
         }
     }
@@ -200,5 +206,52 @@ public class DashboardController extends BaseController {
         taxBrackets.add(new PayrollSystem.TaxBracket(0, 10000, 0.10)); // 10% tax on income between 0 and 10,000
         taxBrackets.add(new PayrollSystem.TaxBracket(10001, 20000, 0.15)); // 15% tax on income between 10,001 and 20,000
         taxBrackets.add(new PayrollSystem.TaxBracket(20001, 30000, 0.20)); // 20% tax on income between 20,001 and 30,000
+    }
+
+    private void getInPatientReport(){
+        XYChart.Series series1 = new XYChart.Series();
+        series1.setName("InBound Patient");
+        List<XYChart.Data<String, Integer>> data = databaseModel.getInPatientReport();
+        for (XYChart.Data<String, Integer> record : data) {
+            series1.getData().add(record);
+            System.out.println("a:"+ record.getXValue() +":"+ record.getYValue());
+        }
+        lineChartPatient.getData().add(series1);
+    }
+    private void getOutPatientReport(){
+        XYChart.Series series1 = new XYChart.Series();
+        series1.setName("OutBound Patient");
+        List<XYChart.Data<String, Integer>> data = databaseModel.getOutPatientReport();
+        for (XYChart.Data<String, Integer> record : data) {
+            series1.getData().add(record);
+            System.out.println("a:"+ record.getXValue() +":"+ record.getYValue());
+        }
+        lineChartPatient.getData().add(series1);
+    }
+    
+    private void getReport() {
+        getInPatientReport();
+        getOutPatientReport();
+        XYChart.Series series3 = new XYChart.Series();
+        series3.setName("OutBound Revenue"); //setting series name (appear as legends)
+        series3.getData().add(new XYChart.Data("Mon", 2023));
+        series3.getData().add(new XYChart.Data("Tue", 1022));
+        series3.getData().add(new XYChart.Data("Wed", 1022));
+        series3.getData().add(new XYChart.Data("Thu", 2422));
+        series3.getData().add(new XYChart.Data("Fri", 3022));
+        series3.getData().add(new XYChart.Data("Sat", 3022));
+        series3.getData().add(new XYChart.Data("Sun", 2222));
+        lineChartRevenue.getData().add(series3);
+        XYChart.Series series4 = new XYChart.Series();
+        series4.setName("OutBound Revenue"); //setting series name (appear as legends)
+        series4.getData().add(new XYChart.Data("Mon", 2044));
+        series4.getData().add(new XYChart.Data("Tue", 104));
+        series4.getData().add(new XYChart.Data("Wed", 1044));
+        series4.getData().add(new XYChart.Data("Thu", 244));
+        series4.getData().add(new XYChart.Data("Fri", 3044));
+        series4.getData().add(new XYChart.Data("Sat", 3044));
+        series4.getData().add(new XYChart.Data("Sun", 2244));
+        lineChartRevenue.getData().add(series4);
+
     }
 }
