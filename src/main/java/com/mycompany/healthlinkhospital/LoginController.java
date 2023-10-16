@@ -79,7 +79,7 @@ public class LoginController extends BaseController {
                 // loading new scene
                 Parent root = loader.load();
                 Scene scene = new Scene(root);
-                stage.setTitle("Get It Now employee management");
+                stage.setTitle("Hospital link ");
                 stage.setScene(scene);
 
                 // setting controller and injecting userId 
