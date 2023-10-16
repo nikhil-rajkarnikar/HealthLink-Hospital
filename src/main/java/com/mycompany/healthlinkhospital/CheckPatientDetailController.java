@@ -74,7 +74,7 @@ public class CheckPatientDetailController extends BaseController {
         inPatientColumn.setCellValueFactory(new PropertyValueFactory<>("isInPatient"));
 
         // Set the cell factory for the column with the button
-        detailColumn.setCellFactory(col -> new ButtontableCell<>(detailColumn));
+        detailColumn.setCellFactory(col -> new ButtonTableCell<>(detailColumn));
         detailColumn.setMinWidth(100);
         
         billingColumn.setCellFactory(col -> new ButtonBillingCell<>(billingColumn));

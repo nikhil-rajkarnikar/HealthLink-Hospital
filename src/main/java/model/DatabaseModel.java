@@ -212,6 +212,54 @@ public class DatabaseModel {
         }
     }
 
+    public boolean updateAppointment(Appointment appt) {
+        String query = "UPDATE appointment SET appointmentDate=?, appointmentTime=? WHERE id=?";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            preparedStatement.setString(1, appt.getAppointmentDate());
+            preparedStatement.setString(2, appt.getAppointmentTime());
+            preparedStatement.setInt(3, appt.getAppointmentId());
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            handleSQLException(e);
+            return false;
+        }
+    }
+    
+    public boolean deleteAppointment(Appointment appt) {
+        String query = "DELETE from appointment WHERE id=?";
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            preparedStatement.setInt(1, appt.getAppointmentId());
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            handleSQLException(e);
+            return false;
+        }
+    }
+    
+    public List<Appointment> getAllAppointments() {
+        String query = "SELECT * FROM appointment";
+        List<Appointment> appointments = new ArrayList<>();
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                int uid = result.getInt("id");
+                String appointmentDate = result.getString("appointmentDate");
+                String appointmentTime = result.getString("appointmentTime");
+                int doctorId = result.getInt("doctorId");
+                int patientId = result.getInt("patientId");
+                int staffId = result.getInt("staffId");
+                int duration = result.getInt("duration");
+                appointments.add(new Appointment(uid, appointmentDate, appointmentTime, patientId, staffId, doctorId, duration));
+            }
+        } catch (SQLException e) {
+            // Handle any SQL exception
+            handleSQLException(e);
+        }
+        return appointments;
+    }
+    
     public synchronized HospitalStaff login(String email, String password) {
         try {
             String storedPassword = getPasswordFromDatabase(email);
