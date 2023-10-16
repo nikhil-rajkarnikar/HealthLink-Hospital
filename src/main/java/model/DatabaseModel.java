@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.chart.XYChart;
 import utilities.AlertUtils;
 import utilities.DatabaseConstants;
 import utilities.DatabasePreparedQueries;
@@ -56,6 +59,7 @@ public class DatabaseModel {
         createEmployeeTableIfNotExists();
         createPatientTableIfNotExists();
         createAppointmentTableIfNotExists();
+        createBillingTableIfNotExists();
     }
 
     private void createEmployeeTableIfNotExists() {
@@ -80,6 +84,14 @@ public class DatabaseModel {
     private void createAppointmentTableIfNotExists() {
         try (Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(DatabaseConstants.QRY_CREATE_APPOINTMENT_TABLE);
+        } catch (SQLException e) {
+            handleSQLException(e);
+        }
+    }
+    
+    private void createBillingTableIfNotExists() {
+        try ( Statement statement = dbConnection.createStatement()) {
+            statement.executeUpdate(DatabaseConstants.QRY_CREATE_BILLING_TABLE);
         } catch (SQLException e) {
             handleSQLException(e);
         }
@@ -200,32 +212,6 @@ public class DatabaseModel {
         }
     }
 
-    public boolean updateAppointment(Appointment appt) {
-        String query = "UPDATE appointment SET appointmentDate=?, appointmentTime=? WHERE id=?";
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
-            preparedStatement.setString(1, appt.getAppointmentDate());
-            preparedStatement.setString(2, appt.getAppointmentTime());
-            preparedStatement.setInt(3, appt.getAppointmentId());
-            int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            handleSQLException(e);
-            return false;
-        }
-    }
-    
-    public boolean deleteAppointment(Appointment appt) {
-        String query = "DELETE from appointment WHERE id=?";
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
-            preparedStatement.setInt(1, appt.getAppointmentId());
-            int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            handleSQLException(e);
-            return false;
-        }
-    }
-
     public synchronized HospitalStaff login(String email, String password) {
         try {
             String storedPassword = getPasswordFromDatabase(email);
@@ -275,6 +261,41 @@ public class DatabaseModel {
             handleSQLException(e);
         }
         return null;
+    }
+
+    public List<XYChart.Data<String, Integer>> getInPatientReport() {
+        List<XYChart.Data<String, Integer>> data = new ArrayList<>();
+        try {
+            PreparedStatement getInPatients = dbQueries.getInboundPatients();
+            ResultSet resultSet = getInPatients.executeQuery();
+
+            while (resultSet.next()) {
+                String day = resultSet.getString("day");
+                int count = resultSet.getInt("count");
+                data.add(new XYChart.Data(day, count));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return data;
+    }
+    public List<XYChart.Data<String, Integer>> getOutPatientReport() {
+        List<XYChart.Data<String, Integer>> data = new ArrayList<>();
+        try {
+            PreparedStatement getInPatients = dbQueries.getOutboundPatients();
+            ResultSet resultSet = getInPatients.executeQuery();
+
+            while (resultSet.next()) {
+                String day = resultSet.getString("day");
+                int count = resultSet.getInt("count");
+                data.add(new XYChart.Data(day, count));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return data;
     }
 
     public Patient getPatientDetails(int patientId) {
@@ -349,7 +370,6 @@ public class DatabaseModel {
             return false;
         }
     }
-    
 
     public synchronized Account getAccountDetailsForEmployee(HospitalStaff employee) {
         String query = "SELECT * FROM Account WHERE employee_id=?";
@@ -370,28 +390,6 @@ public class DatabaseModel {
             handleSQLException(e);
         }
         return null;
-    }
-
-    public List<Appointment> getAllAppointments() {
-        String query = "SELECT * FROM appointment";
-        List<Appointment> appointments = new ArrayList<>();
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
-            ResultSet result = preparedStatement.executeQuery();
-            while (result.next()) {
-                int uid = result.getInt("id");
-                String appointmentDate = result.getString("appointmentDate");
-                String appointmentTime = result.getString("appointmentTime");
-                int doctorId = result.getInt("doctorId");
-                int patientId = result.getInt("patientId");
-                int staffId = result.getInt("staffId");
-                int duration = result.getInt("duration");
-                appointments.add(new Appointment(uid, appointmentDate, appointmentTime, patientId, staffId, doctorId, duration));
-            }
-        } catch (SQLException e) {
-            // Handle any SQL exception
-            handleSQLException(e);
-        }
-        return appointments;
     }
 
     public List<HospitalStaff> getAllEmployees() {
@@ -463,5 +461,28 @@ public class DatabaseModel {
     private void handleSQLException(SQLException e) {
         System.err.println("SQLState: " + e.getSQLState());
         System.err.println("Error Message: " + e.getMessage());
+    }
+    
+    public boolean insertPatientBilling(String generatedDate, String generatedTime, Double amount, Integer appointmentId, Integer patientId) {
+        try {
+//        if (getPatientDetails(email) == null) {
+            PreparedStatement insertStatement = dbQueries.getInsertPatientBilling();
+            insertStatement.setString(1, generatedDate);
+            insertStatement.setString(2, generatedTime);
+            insertStatement.setDouble(3, amount);
+            insertStatement.setInt(4, appointmentId);
+            insertStatement.setInt(5, patientId);            
+
+            int rowsAffected = insertStatement.executeUpdate();
+            return rowsAffected > 0; // Check if the insertion was successful
+//        } else {
+//            // Handle if the user is already present
+//            AlertUtils.showErrorAlert("Error", "Patient already exists");
+//            return false;
+//        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

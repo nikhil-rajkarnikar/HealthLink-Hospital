@@ -4,7 +4,6 @@
  */
 package com.mycompany.healthlinkhospital;
 
-import com.mycompany.healthlinkhospital.TableCells.ButtontableCell;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -51,7 +50,8 @@ public class CheckPatientDetailController extends BaseController {
     TableColumn<Patient, String> imagingRequiredColumn = new TableColumn<>("Imaging Required");
     TableColumn<Patient, String> outPatientColumn = new TableColumn<>("Out Patient");
     TableColumn<Patient, String> inPatientColumn = new TableColumn<>("In Patient");
-    TableColumn<Patient, Void> detailColumn = new TableColumn<>("Appointment Detail");
+    TableColumn<Patient, Void> detailColumn = new TableColumn<>("Detail");
+    TableColumn<Patient, Void> billingColumn = new TableColumn<>("Billing");
 
     /**
      * Initializes the controller class.
@@ -76,8 +76,11 @@ public class CheckPatientDetailController extends BaseController {
         // Set the cell factory for the column with the button
         detailColumn.setCellFactory(col -> new ButtontableCell<>(detailColumn));
         detailColumn.setMinWidth(100);
+        
+        billingColumn.setCellFactory(col -> new ButtonBillingCell<>(billingColumn));
+        billingColumn.setMinWidth(100);
 
-        patientTable.getColumns().addAll(nameColumn, emailColumn, addressColumn, phoneColumn, createdDateColumn, imagingRequiredColumn, outPatientColumn, inPatientColumn, detailColumn);
+        patientTable.getColumns().addAll(nameColumn, emailColumn, addressColumn, phoneColumn, createdDateColumn, imagingRequiredColumn, outPatientColumn, inPatientColumn, detailColumn, billingColumn);
 
         // Create an ObservableList from the list of employees
         ObservableList<Patient> patientData = FXCollections.observableArrayList(databaseModel.getAllPatients());
