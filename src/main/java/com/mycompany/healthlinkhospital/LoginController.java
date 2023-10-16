@@ -67,25 +67,35 @@ public class LoginController extends BaseController {
         var pause = new PauseTransition(javafx.util.Duration.seconds(1));
         pause.setOnFinished(event -> {
             try {
-                String fileName = "dashboard";
+                FXMLLoader loader;
+                String scenePath;
 
-                // closing the current scene so that user can't go back to the previous sreen after successfull login or registration
+                HospitalStaff staff = databaseModel.getEmployeeDetails(employee.getEmail());
+                if (staff.isManager()) {
+                    loader = new FXMLLoader(App.class.getResource("adminDashboard.fxml"));
+                    scenePath = "adminDashboard";
+                } else {
+                    loader = new FXMLLoader(App.class.getResource("dashboard.fxml"));
+                    scenePath = "dashboard";
+                }
+
+                // closing the current scene
                 Node node = (Node) actionEvent.getSource();
                 Stage stage = (Stage) node.getScene().getWindow();
                 stage.close();
 
-                FXMLLoader loader = new FXMLLoader(App.class.getResource(fileName + ".fxml"));
-
                 // loading new scene
                 Parent root = loader.load();
                 Scene scene = new Scene(root);
-                stage.setTitle("Hospital link ");
+                stage.setTitle("HealthLink - Hospital");
                 stage.setScene(scene);
 
-                // setting controller and injecting userId 
-                DashboardController controller = loader.getController();
-                controller.setEmployee(employee);
-                loader.setController(controller);
+                if (scenePath.equals("dashboard")) {
+                    DashboardController controller = loader.getController();
+                    controller.setEmployee(employee);
+                    loader.setController(controller);
+                }
+
                 stage.show();
 
             } catch (Exception e) {

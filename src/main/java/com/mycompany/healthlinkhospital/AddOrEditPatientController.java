@@ -6,6 +6,7 @@ package com.mycompany.healthlinkhospital;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -51,6 +52,12 @@ public class AddOrEditPatientController extends BaseController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         super.initialize(url, rb);
+        if (patient != null) {
+            System.out.println("Patients->" + databaseModel.getAllPatients());
+
+            loadFields();
+
+        }
     }
 
     // TODO
@@ -65,6 +72,7 @@ public class AddOrEditPatientController extends BaseController {
     @FXML
     private void handleSavePatientButton() {
         String createdDateToString = "";
+        LocalDate createdDate;
 
         // Add patient
         if (patient == null) {
@@ -72,7 +80,7 @@ public class AddOrEditPatientController extends BaseController {
             String email = emailTextField.getText();
             String address = addressField.getText();
             String phone = phoneField.getText();
-            LocalDate createdDate = createdDateField.getValue();
+            createdDate = createdDateField.getValue();
             boolean imagingRequired = isImagingRequired.isSelected();
             boolean outPatient = isOutPatient.isSelected();
             boolean inPatient = isInPatient.isSelected();
@@ -98,7 +106,9 @@ public class AddOrEditPatientController extends BaseController {
             patient.setEmail(emailTextField.getText());
             patient.setAddress(addressField.getText());
             patient.setPhone(phoneField.getText());
-            patient.setCreatedDate(createdDateToString);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = createdDateField.getValue().format(formatter);
+            patient.setCreatedDate(formattedDate);
             patient.setDoesRequireImaging(isImagingRequired.isSelected());
             patient.setIsOutPatient(isOutPatient.isSelected());
             patient.setIsInPatient(isInPatient.isSelected());
@@ -106,7 +116,8 @@ public class AddOrEditPatientController extends BaseController {
             // edit patient
             if (databaseModel.updatePatient(patient)) {
 
-                AlertUtils.showConfirmationAlert("Success", "Patient successfully updated. Click close to return back to the dashboard or add another patient");
+                AlertUtils.showConfirmationAlert("Success", "Patient successfully updated. ");
+
                 closeWindow();
             }
         }
@@ -123,23 +134,20 @@ public class AddOrEditPatientController extends BaseController {
         isInPatient.setSelected(false);
     }
 
-//    public void loadFields() {
+    public void loadFields() {
 //        loadAccountDetails();
-//        nameTextField.setText(employee.getName());
-//        emailTextField.setText(employee.getEmail());
-//        emailTextField.setDisable(true);
-//        passwordField.setDisable(true);
-//        passwordField.setText(employee.getPassword());
-//        addressField.setText(employee.getAddress());
-//        phoneField.setText(employee.getPhone());
-//        isAdminCheckBox.setSelected(employee.isManager());
-//        if (employee != null && employee.getUid() != 1001) {
-//            hourlyRateField.setVisible(true);
-//        } else {
-//            hourlyRateField.setVisible(false);
-//            saveEmployeeButton.setVisible(false);
-//        }
-//    }
+        nameTextField.setText(patient.getName());
+        emailTextField.setText(patient.getEmail());
+        emailTextField.setDisable(true);
+        addressField.setText(patient.getAddress());
+        phoneField.setText(patient.getPhone());
+        createdDateField.setValue(LocalDate.parse(patient.getCreatedDate()));
+//        createdDateField.setDisable(true);
+        isImagingRequired.setSelected(patient.getDoesRequireImaging());
+        isOutPatient.setSelected(patient.getIsOutPatient());
+        isInPatient.setSelected(patient.getIsInPatient());
+    }
+
     @FXML
     private void closeWindow() {
         // Return to the dashboard
