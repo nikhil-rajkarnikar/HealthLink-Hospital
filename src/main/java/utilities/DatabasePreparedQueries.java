@@ -42,6 +42,72 @@ public class DatabasePreparedQueries {
         String query = "SELECT * FROM patient";
         return dbConnection.prepareStatement(query);
     }
+    
+    public PreparedStatement getInboundPatients() throws SQLException {
+       String query = "SELECT days_of_week.days as day, coalesce(count, 0) as count " +
+                    "FROM (" +
+                    "    SELECT 'Mon' AS days " +
+                    "    UNION SELECT 'Tue' " +
+                    "    UNION SELECT 'Wed' " +
+                    "    UNION SELECT 'Thu' " +
+                    "    UNION SELECT 'Fri' " +
+                    "    UNION SELECT 'Sat' " +
+                    "    UNION SELECT 'Sun' " +
+                    ") AS days_of_week " +
+                    "LEFT JOIN " +
+                    "(SELECT " +
+                    "    CASE " +
+                    "        WHEN DAYOFWEEK(createdDate) = 1 THEN 'Sun' " +
+                    "        WHEN DAYOFWEEK(createdDate) = 2 THEN 'Mon' " +
+                    "        WHEN DAYOFWEEK(createdDate) = 3 THEN 'Tue' " +
+                    "        WHEN DAYOFWEEK(createdDate) = 4 THEN 'Wed' " +
+                    "        WHEN DAYOFWEEK(createdDate) = 5 THEN 'Thu' " +
+                    "        WHEN DAYOFWEEK(createdDate) = 6 THEN 'Fri' " +
+                    "        WHEN DAYOFWEEK(createdDate) = 7 THEN 'Sat' " +
+                    "    END AS day, " +
+                    "    COALESCE(COUNT(*), 0) AS count " +
+                    "FROM payroll_db.patient " +
+                    "WHERE createdDate >= CURDATE() - INTERVAL 1 WEEK AND isInPatient = 1 " +
+                    "GROUP BY day " +
+                    "ORDER BY day) AS b " +
+                    "ON days_of_week.days = b.day";
+
+
+            return dbConnection.prepareStatement(query);
+    }
+    
+    public PreparedStatement getOutboundPatients() throws SQLException {
+       String query = "SELECT days_of_week.days as day, coalesce(count, 0) as count " +
+                    "FROM (" +
+                    "    SELECT 'Mon' AS days " +
+                    "    UNION SELECT 'Tue' " +
+                    "    UNION SELECT 'Wed' " +
+                    "    UNION SELECT 'Thu' " +
+                    "    UNION SELECT 'Fri' " +
+                    "    UNION SELECT 'Sat' " +
+                    "    UNION SELECT 'Sun' " +
+                    ") AS days_of_week " +
+                    "LEFT JOIN " +
+                    "(SELECT " +
+                    "    CASE " +
+                    "        WHEN DAYOFWEEK(createdDate) = 1 THEN 'Sun' " +
+                    "        WHEN DAYOFWEEK(createdDate) = 2 THEN 'Mon' " +
+                    "        WHEN DAYOFWEEK(createdDate) = 3 THEN 'Tue' " +
+                    "        WHEN DAYOFWEEK(createdDate) = 4 THEN 'Wed' " +
+                    "        WHEN DAYOFWEEK(createdDate) = 5 THEN 'Thu' " +
+                    "        WHEN DAYOFWEEK(createdDate) = 6 THEN 'Fri' " +
+                    "        WHEN DAYOFWEEK(createdDate) = 7 THEN 'Sat' " +
+                    "    END AS day, " +
+                    "    COALESCE(COUNT(*), 0) AS count " +
+                    "FROM payroll_db.patient " +
+                    "WHERE createdDate >= CURDATE() - INTERVAL 1 WEEK AND isOutPatient = 1 " +
+                    "GROUP BY day " +
+                    "ORDER BY day) AS b " +
+                    "ON days_of_week.days = b.day";
+
+
+            return dbConnection.prepareStatement(query);
+    }
 
     public PreparedStatement getEmployeeDetail(String email) throws SQLException {
         String query = "SELECT uid, name, email, isManager, address, phone FROM employee WHERE email = ?";
