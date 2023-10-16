@@ -178,4 +178,10 @@ public class DatabasePreparedQueries {
         String query = "INSERT INTO account (bankName, addedOn, hourlyRate, employee_id) VALUES (?, ?, ?, ?)";
         return dbConnection.prepareStatement(query);
     }
+    
+    public PreparedStatement getInsertPatientBilling() throws SQLException {
+        String query = "INSERT INTO billing (generatedDate, generatedTime, amount, appointmentId, patientId) "
+                + "VALUES (?, ?, ?, ?, ?)";
+        return dbConnection.prepareStatement(query);
+    }
 }

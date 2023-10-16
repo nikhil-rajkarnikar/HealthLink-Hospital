@@ -15,6 +15,7 @@ public class Billing {
     private Double amount;
     private int appointmentId;
     private int patientId;
+    
 
     public Billing(int billingId, String generatedDate, String generatedTime, Double amount, int appointmentId, int patientId) {
         this.billingId = billingId;
