@@ -140,7 +140,7 @@ public class DatabaseModel {
                 insertStatement.setString(6, phone);
 
                 int rowsAffected = insertStatement.executeUpdate();
-                AlertUtils.showConfirmationAlert("Success", "Employee successfully added");
+                
                 return rowsAffected > 0; // Check if the insertion was successful
 
             } else {

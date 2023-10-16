@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.healthlinkhospital.AdminDashboardController">
+   <children>
+      <Label layoutX="24.0" layoutY="29.0" prefHeight="29.0" prefWidth="227.0" text="Welcome Admin">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Button fx:id="addStaffButton" layoutX="24.0" layoutY="103.0" mnemonicParsing="false" onAction="#handleAddStaffButton" prefHeight="97.0" prefWidth="163.0" text="Add a Hospital Staff" />
+      <Button fx:id="logoutButton" layoutX="523.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: red;" text="Logout" textFill="WHITE" />
+      <Separator layoutX="24.0" layoutY="64.0" prefHeight="6.0" prefWidth="562.0" />
+   </children>
+</AnchorPane>
