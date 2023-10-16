@@ -17,7 +17,7 @@ import static utilities.DatabaseConstants.*;
 abstract public class BaseController implements Initializable {
 
     public DatabaseModel databaseModel = null;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
