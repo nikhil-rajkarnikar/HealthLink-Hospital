@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.chart.XYChart;
 import utilities.AlertUtils;
 import utilities.DatabaseConstants;
 import utilities.DatabasePreparedQueries;
@@ -45,7 +48,7 @@ public class DatabaseModel {
     }
 
     private void createDatabaseIfNotExists(String dbCreateStatement) {
-        try ( Statement statement = dbConnection.createStatement()) {
+        try (Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(dbCreateStatement);
         } catch (SQLException e) {
             handleSQLException(e);
@@ -59,7 +62,7 @@ public class DatabaseModel {
     }
 
     private void createEmployeeTableIfNotExists() {
-        try ( Statement statement = dbConnection.createStatement()) {
+        try (Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(DatabaseConstants.QRY_CREATE_EMPLOYEE_TABLE);
 
             // insert default super user
@@ -70,7 +73,7 @@ public class DatabaseModel {
     }
 
     private void createPatientTableIfNotExists() {
-        try ( Statement statement = dbConnection.createStatement()) {
+        try (Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(DatabaseConstants.QRY_CREATE_PATIENT_TABLE);
         } catch (SQLException e) {
             handleSQLException(e);
@@ -78,7 +81,7 @@ public class DatabaseModel {
     }
 
     private void createAppointmentTableIfNotExists() {
-        try ( Statement statement = dbConnection.createStatement()) {
+        try (Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(DatabaseConstants.QRY_CREATE_APPOINTMENT_TABLE);
         } catch (SQLException e) {
             handleSQLException(e);
@@ -180,7 +183,7 @@ public class DatabaseModel {
             return false;
         }
     }
-    
+
     public boolean insertAppointment(Appointment appt) {
         try {
             PreparedStatement insertStatement = dbQueries.getInsertAppointment();
@@ -190,7 +193,7 @@ public class DatabaseModel {
             insertStatement.setInt(4, appt.getPatientId());
             insertStatement.setInt(5, appt.getStaffId());
             insertStatement.setInt(6, appt.getDuration());
-            
+
             int rowsAffected = insertStatement.executeUpdate();
             return rowsAffected > 0;
 
@@ -199,7 +202,7 @@ public class DatabaseModel {
             return false;
         }
     }
-    
+
     public synchronized HospitalStaff login(String email, String password) {
         try {
             String storedPassword = getPasswordFromDatabase(email);
@@ -251,6 +254,41 @@ public class DatabaseModel {
         return null;
     }
 
+    public List<XYChart.Data<String, Integer>> getInPatientReport() {
+        List<XYChart.Data<String, Integer>> data = new ArrayList<>();
+        try {
+            PreparedStatement getInPatients = dbQueries.getInboundPatients();
+            ResultSet resultSet = getInPatients.executeQuery();
+
+            while (resultSet.next()) {
+                String day = resultSet.getString("day");
+                int count = resultSet.getInt("count");
+                data.add(new XYChart.Data(day, count));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return data;
+    }
+    public List<XYChart.Data<String, Integer>> getOutPatientReport() {
+        List<XYChart.Data<String, Integer>> data = new ArrayList<>();
+        try {
+            PreparedStatement getInPatients = dbQueries.getOutboundPatients();
+            ResultSet resultSet = getInPatients.executeQuery();
+
+            while (resultSet.next()) {
+                String day = resultSet.getString("day");
+                int count = resultSet.getInt("count");
+                data.add(new XYChart.Data(day, count));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return data;
+    }
+
     public Patient getPatientDetails(int patientId) {
         try {
             PreparedStatement getPatientDetailsStatement = dbQueries.getPatientDetail(patientId);
@@ -276,7 +314,7 @@ public class DatabaseModel {
 
     public boolean updateEmployee(HospitalStaff employee) {
         String query = "UPDATE employee SET name=?, isManager=?, address=?, phone=? WHERE uid=?";
-        try ( PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setString(1, employee.getName());
             preparedStatement.setBoolean(2, employee.isManager());
             preparedStatement.setString(3, employee.getAddress());
@@ -293,7 +331,7 @@ public class DatabaseModel {
 
     public boolean updatePatient(Patient patient) {
         String query = "UPDATE patient SET name=?, address=?, phone=?, createdDate=?, doesRequireImaging=?, isOutPatient=?, isInPatient=? WHERE patientId=?";
-        try ( PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setString(1, patient.getName());
             preparedStatement.setString(2, patient.getAddress());
             preparedStatement.setString(3, patient.getPhone());
@@ -313,7 +351,7 @@ public class DatabaseModel {
 
     public boolean updateAccount(HospitalStaff employee, Account account) {
         String query = "UPDATE account SET hourlyRate=? WHERE employee_id=?";
-        try ( PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setDouble(2, account.getHourlyRate());
             preparedStatement.setString(1, employee.getName());
             int rowsAffected = preparedStatement.executeUpdate();
@@ -326,7 +364,7 @@ public class DatabaseModel {
 
     public synchronized Account getAccountDetailsForEmployee(HospitalStaff employee) {
         String query = "SELECT * FROM Account WHERE employee_id=?";
-        try ( PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(query)) {
             preparedStatement.setInt(1, employee.getUid());
 
             ResultSet result = preparedStatement.executeQuery();
